@@ -45,47 +45,35 @@ function zod.string()
 end
 
 function zod.object(schema)
-  local validator = {}
-
-  function validator.parse(value)
+  local function parse(value, safe)
     if type(value) ~= "table" then
-      error("Expected table, got " .. type(value))
+      return safe
+          and { success = false, error = "Expected table, got " .. type(value) }
+          or error("Expected table, got " .. type(value))
     end
 
     local result = {}
     for key, fieldValidator in pairs(schema) do
       if fieldValidator and fieldValidator.parse then
-        -- This is a zod field validator
-        result[key] = fieldValidator.parse(value[key])
-      else
-        -- Just copy the value if it's not a validator
-        result[key] = value[key]
-      end
-    end
-    return result
-  end
-
-  function validator.safeParse(value)
-    if type(value) ~= "table" then
-      return { success = false, error = "Expected table, got " .. type(value) }
-    end
-
-    local result = {}
-    for key, fieldValidator in pairs(schema) do
-      if fieldValidator and fieldValidator.parse then
-        local parseResult = fieldValidator.safeParse(value[key])
-        if not parseResult.success then
-          return { success = false, error = "Field '" .. key .. "': " .. parseResult.error }
+        local parsedValue = fieldValidator.parse(value[key], safe)
+        if safe and not parsedValue.success then
+          return parsedValue
         end
-        result[key] = parseResult.data
+        result[key] = safe and parsedValue.data or parsedValue
       else
         result[key] = value[key]
       end
     end
-    return { success = true, data = result }
+
+    return safe
+        and { success = true, data = result }
+        or result
   end
 
-  return validator
+  return {
+    parse = function(value) return parse(value, false) end,
+    safeParse = function(value) return parse(value, true) end
+  }
 end
 
 return zod
