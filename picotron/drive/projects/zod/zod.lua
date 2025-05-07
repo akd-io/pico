@@ -19,23 +19,17 @@
 local zod = {}
 
 function zod.string()
-  local getErrorMessage = function(value)
-    return "Expected string, got " .. type(value)
-  end
-
-  local function condition(value)
-    return type(value) == "string"
-  end
-
   local function parse(value, safe)
-    if (condition(value)) then
+    if type(value) != "string" then
+      local errorMessage = "Expected string, got " .. type(value)
       return safe
-          and { success = true, data = value }
-          or value
+          and { success = false, error = errorMessage }
+          or error(errorMessage)
     end
+
     return safe
-        and { success = false, error = getErrorMessage(value) }
-        or error(getErrorMessage(value))
+        and { success = true, data = value }
+        or value
   end
 
   return {
@@ -47,27 +41,29 @@ end
 function zod.object(schema)
   local function parse(value, safe)
     if type(value) ~= "table" then
+      local errorMessage = "Expected table, got " .. type(value)
       return safe
-          and { success = false, error = "Expected table, got " .. type(value) }
-          or error("Expected table, got " .. type(value))
+          and { success = false, error = errorMessage }
+          or error(errorMessage)
     end
 
-    local result = {}
     for key, fieldValidator in pairs(schema) do
-      if fieldValidator and fieldValidator.parse then
-        local parsedValue = fieldValidator.parse(value[key], safe)
-        if safe and not parsedValue.success then
-          return parsedValue
+      if safe then
+        local result = fieldValidator.safeParse(value[key])
+        if not result.success then
+          return {
+            success = false,
+            error = "Error in field '" .. key .. "': " .. result.error
+          }
         end
-        result[key] = safe and parsedValue.data or parsedValue
       else
-        result[key] = value[key]
+        fieldValidator.parse(value[key])
       end
     end
 
     return safe
-        and { success = true, data = result }
-        or result
+        and { success = true, data = value }
+        or value
   end
 
   return {
