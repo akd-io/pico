@@ -67,7 +67,6 @@ local function parseObject(schema, value, safe)
     error("Invalid schema type. Expected object, got " .. schema._type)
   end
 
-
   if type(value) != "table" then
     local errorMessage = "Expected table, got " .. type(value)
     return safe
