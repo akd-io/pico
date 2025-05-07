@@ -16,7 +16,25 @@
      this. Maybe it'll be validate, not parse, after all.
 ]]
 
-local function parseString(value, safe)
+local function addEntries(tbl, entries)
+  for k, v in pairs(entries) do
+    tbl[k] = v
+  end
+  return tbl
+end
+
+local schemaTypes = {
+  string = "string",
+  object = "object"
+}
+
+local internalParse
+local commonReturnValues = {
+  parse = function(value) return internalParse(value, false) end,
+  safeParse = function(value) return internalParse(value, true) end
+}
+
+local function parseString(schema, value, safe)
   if type(value) != "string" then
     local errorMessage = "Expected string, got " .. type(value)
     return safe
@@ -30,10 +48,10 @@ local function parseString(value, safe)
 end
 
 local function zodString()
-  return {
-    parse = function(value) return parseString(value, false) end,
-    safeParse = function(value) return parseString(value, true) end
+  local result = {
+    _type = schemaTypes.string,
   }
+  return addEntries(result, commonReturnValues)
 end
 
 local function parseObject(childSchemas, value, safe)
@@ -64,12 +82,22 @@ local function parseObject(childSchemas, value, safe)
 end
 
 local function zodObject(childSchemas)
-  return {
-    parse = function(value) return parseObject(childSchemas, value, false) end,
-    safeParse = function(value) return parseObject(childSchemas, value, true) end
+  local result = {
+    _type = schemaTypes.object,
+    childSchemas = childSchemas,
   }
+  return addEntries(result, commonReturnValues)
 end
 
+internalParse = function(schema, value, safe)
+  if (schema._type == "object") then
+    return parseObject(schema, value, safe)
+  elseif (schema._type == "string") then
+    return parseString(schema, value, safe)
+  end
+
+  return error("Invalid schema type")
+end
 
 local zod = {
   string = zodString,
