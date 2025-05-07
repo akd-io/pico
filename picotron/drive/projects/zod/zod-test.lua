@@ -1,4 +1,4 @@
-local z = include("zod")
+local z = include("zod.lua")
 
 -- Test successful cases:
 local myStringSchema = z.string()
@@ -16,5 +16,3 @@ assert(safeFailingResult.error == "Expected string, got number", "Expected error
 
 -- Test failing unsafe case throws:
 local test = myStringSchema.parse(123) -- should throw an error
-
-printh(test)
