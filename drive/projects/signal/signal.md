@@ -60,7 +60,7 @@ This document will try to document every `_signal()` code.
 
 ## Binary Ninja
 
-From [`0.2.0c.bndb`](picotron/versions/bndbs/0.2.0c.bndb):
+From [`0.2.0c.bndb`](versions/bndbs/0.2.0c.bndb):
 
 ```
 100075f10    int64_t _lua54__signal()
@@ -145,14 +145,14 @@ From [`0.2.0c.bndb`](picotron/versions/bndbs/0.2.0c.bndb):
 
 Search term: `_signal(`
 
-Files to include: `picotron/drive/dumps/0.2.0d/system`
+Files to include: `drive/dumps/0.2.0d/system`
 
 Context lines: `1`
 
 ```
 40 results - 7 files
 
-picotron/drive/dumps/0.2.0d/system/startup.lua:
+drive/dumps/0.2.0d/system/startup.lua:
   106  	flip()
   107: 	if (stat(988) > 0) bypass = true _signal(35)
   108  end
@@ -161,12 +161,12 @@ picotron/drive/dumps/0.2.0d/system/startup.lua:
   201: 		_signal(39)
   202  	end
 
-picotron/drive/dumps/0.2.0d/system/lib/app_menu.lua:
+drive/dumps/0.2.0d/system/lib/app_menu.lua:
   87  			--send_message(_pid(), {event = "unpause"})
   88: 			_signal(23) -- block all buttons until released
   89  			send_message(3, {event = "close_pause_menu"}) -- only applies to fullscreen apps
 
-picotron/drive/dumps/0.2.0d/system/lib/events.lua:
+drive/dumps/0.2.0d/system/lib/events.lua:
   303  			-- update: nah -- too much magic and not that useful. better to do explicitly in _update() (e.g. ignore button presses while ctrl held)
   304: 			-- _signal(23)
   305
@@ -179,7 +179,7 @@ picotron/drive/dumps/0.2.0d/system/lib/events.lua:
   461: 			_signal(23) -- also: block buttons. Don't want the "v" press to pass through as a button press
   462  		end
 
-picotron/drive/dumps/0.2.0d/system/lib/fs.lua:
+drive/dumps/0.2.0d/system/lib/fs.lua:
    876  		if (type(obj) == "string" and ext and ext:is_cart()) then
    877: 			_signal(40)
    878  				_rm(location:path()) -- unmount existing cartridge // to do: be more efficient
@@ -210,12 +210,12 @@ picotron/drive/dumps/0.2.0d/system/lib/fs.lua:
   1151: 		_signal(41) -- unlock
   1152  		return ret0, ret1
 
-picotron/drive/dumps/0.2.0d/system/lib/head.lua:
+drive/dumps/0.2.0d/system/lib/head.lua:
   456
   457: 		_signal(38) -- start of userland code (for memory accounting)
   458
 
-picotron/drive/dumps/0.2.0d/system/pm/pm.lua:
+drive/dumps/0.2.0d/system/pm/pm.lua:
    17  	-- headless script: shutdown when no userland processes remaining
    18: 	if (stat(315) > 0 and #_get_process_list() <= 3) _signal(33)
    19
@@ -240,7 +240,7 @@ picotron/drive/dumps/0.2.0d/system/pm/pm.lua:
   159: 		_signal(42)
   160
 
-picotron/drive/dumps/0.2.0d/system/wm/wm.lua:
+drive/dumps/0.2.0d/system/wm/wm.lua:
    635
    636: 	--_signal(36) -- finished loading core processes  (deleteme -- shouldn't need)
    637  	--flip()

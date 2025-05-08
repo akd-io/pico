@@ -1,4 +1,4 @@
 Picotron Workstation OS 0.1.0 (c) Lexaloffle Games
 https://www.picotron.net
 build: 240315-031349
-mount: [/] [/Users/akd/workspace/pico/picotron/drive]
+mount: [/] [/Users/akd/workspace/picotron/drive]

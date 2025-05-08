@@ -224,5 +224,5 @@ dist
 .aider*
 
 # Custom Picotron ignores
-picotron/drive/dumps/*/ram/mount/
-picotron/versions/out/
+drive/dumps/*/ram/mount/
+versions/out/

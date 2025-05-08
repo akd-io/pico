@@ -1,4 +1,4 @@
-picotron/drive/dumps/ram/mount/gfrbswob/system/boot.lua:
+drive/dumps/ram/mount/gfrbswob/system/boot.lua:
    90  	local keep_going = true
    91: 	local remaining = allotment - stat(301)
    92  	local slices = 0
@@ -24,7 +24,7 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/boot.lua:
   254: 	flip() -- reset cpu_cycles for next frame? doesn't matter now that using stat(301) though.
   255
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/startup.lua:
+drive/dumps/ram/mount/gfrbswob/system/startup.lua:
     8  	sdat = fetch"/system/misc/default_settings.pod"
     9: 	if (stat(317) > 0) then
    10  		sdat.wallpaper = "/system/wallpapers/pattern.p64"
@@ -74,7 +74,7 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/startup.lua:
   199: 	if ((stat(317) & 0x3) == 0x3) then -- player that has embedded rom
   200  		-- printh("** sending signal 39: disabling mounting **")
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/apps/filenav.p64:
+drive/dumps/ram/mount/gfrbswob/system/apps/filenav.p64:
   2862
   2863: 	local t0=stat(1)
   2864
@@ -87,48 +87,48 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/apps/filenav.p64:
   3030: 				-- printh("clicked on file; {intention, open_with, fullpath(filename), stat(307)}"..pod{intention, env().open_with, fullpath(filename), stat(307)})
   3031
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/apps/terminal.lua:
+drive/dumps/ram/mount/gfrbswob/system/apps/terminal.lua:
   123
   124: 	-- add_line("picotron terminal // "..flr(stat(0)).." bytes used")
   125
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/demos/bells.p64:
+drive/dumps/ram/mount/gfrbswob/system/demos/bells.p64:
   98  	end
   99: 	--print(stat(1),2,2,8)
   100  end
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/demos/carpet.p64:
+drive/dumps/ram/mount/gfrbswob/system/demos/carpet.p64:
   146
   147: 	--print(string.format("cpu: %3.3f (%dfps)", stat(1), stat(7)), 10, 10, 1)
   148
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/demos/hexopus.p64:
+drive/dumps/ram/mount/gfrbswob/system/demos/hexopus.p64:
   54  	clip()
   55: 	print(string.format("%.5f", stat(1)), 12,2,17)
   56  end
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/demos/highway.p64:
+drive/dumps/ram/mount/gfrbswob/system/demos/highway.p64:
   83  	fillp()
   84: 	print(string.format("%.4f %dfps",stat(1), stat(7)),2,2,5)
   85
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/demos/pixeldust.p64:
+drive/dumps/ram/mount/gfrbswob/system/demos/pixeldust.p64:
   48  	print("dots:"..max_idx,2,2,13)
   49: 	print("cpu: "..string.format("%.3f",stat(1)),2,12)
   50: 	print(stat(7).."fps",2,24)
   51
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/demos/proggy.p64:
+drive/dumps/ram/mount/gfrbswob/system/demos/proggy.p64:
   253  	-- show fps
   254: 	print(string.format("cpu:%.3f",stat(1)), 420,5,13)
   255  end
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/demos/spiral.p64:
+drive/dumps/ram/mount/gfrbswob/system/demos/spiral.p64:
   22  	end
   23: 	print(string.format("%.5f",stat(1)),2,2,7)
   24  end
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/lib/events.lua:
+drive/dumps/ram/mount/gfrbswob/system/lib/events.lua:
   151  	for i=1,255 do
   152: 		local mapped_name = stat(302, i)
   153  		if (mapped_name and mapped_name ~= "") then
@@ -137,7 +137,7 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/lib/events.lua:
   449: 		elseif stat(318) == 1 then
   450  			-- web: when ctrl-v, pretend the v didn't happen.
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/lib/foot.lua:
+drive/dumps/ram/mount/gfrbswob/system/lib/foot.lua:
   33
   34: -- printh("entering mainloop at cpu:"..flr(stat(1)/100).."%   mem:"..flr(stat(0)/1024).."k")
   35
@@ -146,7 +146,7 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/lib/foot.lua:
   67: 				local fps = stat(7)
   68  				if (fps < 60) __process_event_messages() _update()
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/lib/fs.lua:
+drive/dumps/ram/mount/gfrbswob/system/lib/fs.lua:
    92  		-- bbs web player
    93: 		if ((stat(317) & 0x3) == 0x1) then
    94: 			if (stat(152) == "localhost") return "http://localhost" -- dev
@@ -162,12 +162,12 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/lib/fs.lua:
   109: 		if (stat(317) > 0) return ""
   110  		-- binaries: use cdn
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/lib/gui_ed.lua:
+drive/dumps/ram/mount/gfrbswob/system/lib/gui_ed.lua:
   1468
   1469: --		printh(string.format("cpu %.3f",stat(1)),440,2,7)
   1470
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/lib/head.lua:
+drive/dumps/ram/mount/gfrbswob/system/lib/head.lua:
    203  	-- sandboxed programs can not create processes
    204: 	if _env().sandbox and ((stat(307) & 0x1) == 0) then -- sandboxed program that is not a trusted system app
    205
@@ -196,7 +196,7 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/lib/head.lua:
   1065: 		(stat(307) & 0x1) == 1 or                     -- can always send message if is bundled /system app (filenav)
   1066  		proc_id == 3 or                               -- can always send message to wm
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/misc/load_player.lua:
+drive/dumps/ram/mount/gfrbswob/system/misc/load_player.lua:
   18
   19: elseif stat(101) then
   20
@@ -211,7 +211,7 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/misc/load_player.lua:
   31: 	mount("/desktop/"..stat(101)..".p64","/ram/bbs_cart.p64")
   32
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/pm/pm.lua:
+drive/dumps/ram/mount/gfrbswob/system/pm/pm.lua:
   17  	-- headless script: shutdown when no userland processes remaining
   18: 	if (stat(315) > 0 and #_get_process_list() <= 3) _signal(33)
   19
@@ -220,12 +220,12 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/pm/pm.lua:
   22: 	if (stat(317) > 0 and #_get_process_list() <= 3) _signal(33)
   23
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/screensavers/breach.p64:
+drive/dumps/ram/mount/gfrbswob/system/screensavers/breach.p64:
   69
   70: 	--print(stat(1),400,2,7)
   71  	--circ(mx,my,rr/2,7)
 
-picotron/drive/dumps/ram/mount/gfrbswob/system/wm/wm.lua:
+drive/dumps/ram/mount/gfrbswob/system/wm/wm.lua:
     50
     51: -- to do: remove; can use a stat() and keep track at a lower level (do anyway for battery saver logic)
     52  local last_input_activity_t = 0
@@ -307,17 +307,17 @@ picotron/drive/dumps/ram/mount/gfrbswob/system/wm/wm.lua:
   3979: 	if (stat(318) == 0) add(item, {"\^:082a494141221c00 Shutdown", function() send_message(2, {event="shutdown"}) end})
   3980
 
-picotron/drive/dumps/ram/mount/gtdzmahg/main.lua:
+drive/dumps/ram/mount/gtdzmahg/main.lua:
   62  	end
   63: 	--print(stat(1),2,2,8)
   64  end
 
-picotron/drive/dumps/ram/mount/jjkxftqr/main.lua:
+drive/dumps/ram/mount/jjkxftqr/main.lua:
   11  	end
   12: 	print(string.format("%.5f",stat(1)),2,2,7)
   13  end
 
-picotron/drive/dumps/ram/mount/lnqujccm/main.lua:
+drive/dumps/ram/mount/lnqujccm/main.lua:
   110
   111: 	local t0=stat(1)
   112
@@ -326,17 +326,17 @@ picotron/drive/dumps/ram/mount/lnqujccm/main.lua:
   133: 		print((stat(1)-t0)\0.01,get_display():width()-30,12,8)
   134  	end
 
-picotron/drive/dumps/ram/mount/lnqujccm/open.lua:
+drive/dumps/ram/mount/lnqujccm/open.lua:
   64
   65: 				-- printh("clicked on file; {intention, open_with, fullpath(filename), stat(307)}"..pod{intention, env().open_with, fullpath(filename), stat(307)})
   66
 
-picotron/drive/dumps/ram/mount/mefisjvu/main.lua:
+drive/dumps/ram/mount/mefisjvu/main.lua:
   51  	-- show fps
   52: 	print(string.format("cpu:%.3f",stat(1)), 420,5,13)
   53  end
 
-picotron/drive/dumps/ram/mount/mxhduaku/main.lua:
+drive/dumps/ram/mount/mxhduaku/main.lua:
   110
   111: 	local t0=stat(1)
   112
@@ -345,23 +345,23 @@ picotron/drive/dumps/ram/mount/mxhduaku/main.lua:
   133: 		print((stat(1)-t0)\0.01,get_display():width()-30,12,8)
   134  	end
 
-picotron/drive/dumps/ram/mount/mxhduaku/open.lua:
+drive/dumps/ram/mount/mxhduaku/open.lua:
   64
   65: 				-- printh("clicked on file; {intention, open_with, fullpath(filename), stat(307)}"..pod{intention, env().open_with, fullpath(filename), stat(307)})
   66
 
-picotron/drive/dumps/ram/mount/ntuuewir/main.lua:
+drive/dumps/ram/mount/ntuuewir/main.lua:
   30  	print("dots:"..max_idx,2,2,13)
   31: 	print("cpu: "..string.format("%.3f",stat(1)),2,12)
   32: 	print(stat(7).."fps",2,24)
   33
 
-picotron/drive/dumps/ram/mount/qbqcuchc/main.lua:
+drive/dumps/ram/mount/qbqcuchc/main.lua:
   43  	clip()
   44: 	print(string.format("%.5f", stat(1)), 12,2,17)
   45  end
 
-picotron/drive/dumps/ram/mount/qljraddm/main.lua:
+drive/dumps/ram/mount/qljraddm/main.lua:
   11  function _draw()
   12: 	--printh("_draw() start "..stat(1))
   13  	cls()
@@ -371,7 +371,7 @@ picotron/drive/dumps/ram/mount/qljraddm/main.lua:
   78: 	--printh("_draw() end "..stat(1))
   79  end
 
-picotron/drive/dumps/ram/mount/rlnzdsxi/debug.lua:
+drive/dumps/ram/mount/rlnzdsxi/debug.lua:
   10  		-- chan->playing_track_index
   11: 		print("\14"..stat(400+i,12), sx, sy, 7)
   12
@@ -385,7 +385,7 @@ picotron/drive/dumps/ram/mount/rlnzdsxi/debug.lua:
   20: 	print(string.format("cpu:%3.3f", stat(1)),x,y+52,13)
   21  	print((something_is_playing and "p" or "-"),x+50,y+52,14)
 
-picotron/drive/dumps/ram/mount/rlnzdsxi/gui.lua:
+drive/dumps/ram/mount/rlnzdsxi/gui.lua:
   328  		draw=function(self)
   329: 			local playing_pattern = stat(466)
   330  			i0 = mid(0, ((-contents.y) \ 12) * 4, 127)
@@ -398,7 +398,7 @@ picotron/drive/dumps/ram/mount/rlnzdsxi/gui.lua:
   746: 				local row = stat(400 + stat(467),9)
   747  				print("playing row: "..flr(row),0,0,13)
 
-picotron/drive/dumps/ram/mount/rlnzdsxi/inst.lua:
+drive/dumps/ram/mount/rlnzdsxi/inst.lua:
   521
   522: 			local tick_len = stat(400 + ci_channel, 8)
   523
@@ -407,12 +407,12 @@ picotron/drive/dumps/ram/mount/rlnzdsxi/inst.lua:
   528: 				tick_len = stat(400 + ci_channel, 20 + node_index, tick_addr)
   529  			end
 
-picotron/drive/dumps/ram/mount/rlnzdsxi/main.lua:
+drive/dumps/ram/mount/rlnzdsxi/main.lua:
   167
   168: --	print(string.format("cpu:%3.3f",stat(1)),440,250,7)
   169  --draw_mudo_state(380,200)
 
-picotron/drive/dumps/ram/mount/rlnzdsxi/track.lua:
+drive/dumps/ram/mount/rlnzdsxi/track.lua:
   135
   136: 	if (stat(464)==0) return nil -- nothing playing
   137
@@ -422,7 +422,7 @@ picotron/drive/dumps/ram/mount/rlnzdsxi/track.lua:
   141: 			return stat(400 + i, 9)
   142  		end
 
-picotron/drive/dumps/ram/mount/rlnzdsxi/update.lua:
+drive/dumps/ram/mount/rlnzdsxi/update.lua:
   31
   32: 		local row = stat(400 + stat(467), 9)
   33  		pattern_contents.y = mid(0, 64 - row * 8,
@@ -444,19 +444,19 @@ picotron/drive/dumps/ram/mount/rlnzdsxi/update.lua:
   65: 	len = stat(465,0,0xe0000)
   66  	local found_signal = false
 
-picotron/drive/dumps/ram/mount/rtugaoqh/canvas.lua:
+drive/dumps/ram/mount/rtugaoqh/canvas.lua:
   45  	--[[
   46: 	if (stat(1) - fill_cpu > 2) then
   47: 		fill_cpu = stat(1) gui:draw_all() flip()
   48  		poke(0x547c, 1) -- keep holding frame
 
-picotron/drive/dumps/ram/mount/rtugaoqh/gui.lua:
+drive/dumps/ram/mount/rtugaoqh/gui.lua:
   247  	function el:draw()
   248: 		print(string.format("%2.2fmb (%02d%%)",stat(0)/0x100000,stat(0)\167772),0,0,
   249: 			stat(0) > 0xe00000 and 14 or 21) -- warn when more than 7/8ths of capacity
   250  	end
 
-picotron/drive/dumps/ram/mount/rtugaoqh/undo.lua:
+drive/dumps/ram/mount/rtugaoqh/undo.lua:
   38  	local ii = item[current_item]
   39: 	local tt0 = stat(1)
   40  	ii.undo_stack:checkpoint()
@@ -465,27 +465,27 @@ picotron/drive/dumps/ram/mount/rtugaoqh/undo.lua:
   45: --	printh(string.format("%3.3f",stat(1)-tt0).." // patch size:"..
   46  --		#(ii.undo_stack.undo_stack[#ii.undo_stack.undo_stack]))
 
-picotron/drive/dumps/ram/mount/ruvopuku/main.lua:
+drive/dumps/ram/mount/ruvopuku/main.lua:
   42  	end
   43: 	print(string.format("cpu:%.3f",stat(1)),2,2)
   44  end
 
-picotron/drive/dumps/ram/mount/rwpgwskn/main.lua:
+drive/dumps/ram/mount/rwpgwskn/main.lua:
   62  	end
   63: 	--print(stat(1),2,2,8)
   64  end
 
-picotron/drive/dumps/ram/mount/tduwqjry/main.lua:
+drive/dumps/ram/mount/tduwqjry/main.lua:
   35
   36: 	--print(stat(1),400,2,7)
   37  	--circ(mx,my,rr/2,7)
 
-picotron/drive/dumps/ram/mount/tjgvywrj/main.lua:
+drive/dumps/ram/mount/tjgvywrj/main.lua:
   71  	fillp()
   72: 	print(string.format("%.4f %dfps",stat(1), stat(7)),2,2,5)
   73
 
-picotron/drive/dumps/ram/mount/tukxcwqu/canvas.lua:
+drive/dumps/ram/mount/tukxcwqu/canvas.lua:
    43  	--[[
    44: 	if (stat(1) - fill_cpu > 2) then
    45: 		fill_cpu = stat(1) gui:draw_all() flip()
@@ -495,13 +495,13 @@ picotron/drive/dumps/ram/mount/tukxcwqu/canvas.lua:
   523: 		--print(stat(1),10,10,7)
   524
 
-picotron/drive/dumps/ram/mount/tukxcwqu/gui.lua:
+drive/dumps/ram/mount/tukxcwqu/gui.lua:
   167  	function el:draw()
   168: 		print(string.format("%2.2fmb (%02d%%)",stat(0)/0x100000,stat(0)\167772),0,0,
   169: 			stat(0) > 0xe00000 and 14 or 21) -- warn when more than 7/8ths of capacity
   170  	end
 
-picotron/drive/dumps/ram/mount/tukxcwqu/undo.lua:
+drive/dumps/ram/mount/tukxcwqu/undo.lua:
   34  	local ii = item[current_item]
   35: 	local tt0 = stat(1)
   36
@@ -510,17 +510,17 @@ picotron/drive/dumps/ram/mount/tukxcwqu/undo.lua:
   39: --	printh(string.format("%3.3f",stat(1)-tt0).." // patch size:"..
   40  --		#(ii.undo_stack.undo_stack[#ii.undo_stack.undo_stack]))
 
-picotron/drive/dumps/ram/mount/txsddmza/main.lua:
+drive/dumps/ram/mount/txsddmza/main.lua:
   134
   135: 	--print(string.format("cpu: %3.3f (%dfps)", stat(1), stat(7)), 10, 10, 1)
   136
 
-picotron/drive/dumps/ram/mount/vvgjapgd/main.lua:
+drive/dumps/ram/mount/vvgjapgd/main.lua:
   51  	-- show fps
   52: 	print(string.format("cpu:%.3f",stat(1)), 420,5,13)
   53  end
 
-picotron/drive/dumps/ram/mount/zfdzyukc/canvas.lua:
+drive/dumps/ram/mount/zfdzyukc/canvas.lua:
    43  	--[[
    44: 	if (stat(1) - fill_cpu > 2) then
    45: 		fill_cpu = stat(1) gui:draw_all() flip()
@@ -530,13 +530,13 @@ picotron/drive/dumps/ram/mount/zfdzyukc/canvas.lua:
   523: 		--print(stat(1),10,10,7)
   524
 
-picotron/drive/dumps/ram/mount/zfdzyukc/gui.lua:
+drive/dumps/ram/mount/zfdzyukc/gui.lua:
   167  	function el:draw()
   168: 		print(string.format("%2.2fmb (%02d%%)",stat(0)/0x100000,stat(0)\167772),0,0,
   169: 			stat(0) > 0xe00000 and 14 or 21) -- warn when more than 7/8ths of capacity
   170  	end
 
-picotron/drive/dumps/ram/mount/zfdzyukc/undo.lua:
+drive/dumps/ram/mount/zfdzyukc/undo.lua:
   34  	local ii = item[current_item]
   35: 	local tt0 = stat(1)
   36
@@ -545,17 +545,17 @@ picotron/drive/dumps/ram/mount/zfdzyukc/undo.lua:
   39: --	printh(string.format("%3.3f",stat(1)-tt0).." // patch size:"..
   40  --		#(ii.undo_stack.undo_stack[#ii.undo_stack.undo_stack]))
 
-picotron/drive/dumps/ram/mount/zsovbgnc/main.lua:
+drive/dumps/ram/mount/zsovbgnc/main.lua:
   134
   135: 	--print(string.format("cpu: %3.3f (%dfps)", stat(1), stat(7)), 10, 10, 1)
   136
 
-picotron/drive/dumps/ram/mount/zvoojjub/main.lua:
+drive/dumps/ram/mount/zvoojjub/main.lua:
   42  	end
   43: 	print(string.format("cpu:%.3f",stat(1)),2,2)
   44  end
 
-picotron/drive/dumps/system/boot.lua:
+drive/dumps/system/boot.lua:
    90  	local keep_going = true
    91: 	local remaining = allotment - stat(301)
    92  	local slices = 0
@@ -581,7 +581,7 @@ picotron/drive/dumps/system/boot.lua:
   254: 	flip() -- reset cpu_cycles for next frame? doesn't matter now that using stat(301) though.
   255
 
-picotron/drive/dumps/system/startup.lua:
+drive/dumps/system/startup.lua:
     8  	sdat = fetch"/system/misc/default_settings.pod"
     9: 	if (stat(317) > 0) then
    10  		sdat.wallpaper = "/system/wallpapers/pattern.p64"
@@ -631,7 +631,7 @@ picotron/drive/dumps/system/startup.lua:
   199: 	if ((stat(317) & 0x3) == 0x3) then -- player that has embedded rom
   200  		-- printh("** sending signal 39: disabling mounting **")
 
-picotron/drive/dumps/system/apps/filenav.p64:
+drive/dumps/system/apps/filenav.p64:
   2862
   2863: 	local t0=stat(1)
   2864
@@ -644,7 +644,7 @@ picotron/drive/dumps/system/apps/filenav.p64:
   3030: 				-- printh("clicked on file; {intention, open_with, fullpath(filename), stat(307)}"..pod{intention, env().open_with, fullpath(filename), stat(307)})
   3031
 
-picotron/drive/dumps/system/apps/gfx.p64:
+drive/dumps/system/apps/gfx.p64:
     49  	--[[
     50: 	if (stat(1) - fill_cpu > 2) then
     51: 		fill_cpu = stat(1) gui:draw_all() flip()
@@ -663,7 +663,7 @@ picotron/drive/dumps/system/apps/gfx.p64:
   1630: --	printh(string.format("%3.3f",stat(1)-tt0).." // patch size:"..
   1631  --		#(ii.undo_stack.undo_stack[#ii.undo_stack.undo_stack]))
 
-picotron/drive/dumps/system/apps/map.p64:
+drive/dumps/system/apps/map.p64:
     47  	--[[
     48: 	if (stat(1) - fill_cpu > 2) then
     49: 		fill_cpu = stat(1) gui:draw_all() flip()
@@ -686,7 +686,7 @@ picotron/drive/dumps/system/apps/map.p64:
   1704: --	printh(string.format("%3.3f",stat(1)-tt0).." // patch size:"..
   1705  --		#(ii.undo_stack.undo_stack[#ii.undo_stack.undo_stack]))
 
-picotron/drive/dumps/system/apps/sfx.p64:
+drive/dumps/system/apps/sfx.p64:
    321  		-- chan->playing_track_index
    322: 		print("\14"..stat(400+i,12), sx, sy, 7)
    323
@@ -754,48 +754,48 @@ picotron/drive/dumps/system/apps/sfx.p64:
   4050: 	len = stat(465,0,0xe0000)
   4051  	local found_signal = false
 
-picotron/drive/dumps/system/apps/terminal.lua:
+drive/dumps/system/apps/terminal.lua:
   123
   124: 	-- add_line("picotron terminal // "..flr(stat(0)).." bytes used")
   125
 
-picotron/drive/dumps/system/demos/bells.p64:
+drive/dumps/system/demos/bells.p64:
   98  	end
   99: 	--print(stat(1),2,2,8)
   100  end
 
-picotron/drive/dumps/system/demos/carpet.p64:
+drive/dumps/system/demos/carpet.p64:
   146
   147: 	--print(string.format("cpu: %3.3f (%dfps)", stat(1), stat(7)), 10, 10, 1)
   148
 
-picotron/drive/dumps/system/demos/hexopus.p64:
+drive/dumps/system/demos/hexopus.p64:
   54  	clip()
   55: 	print(string.format("%.5f", stat(1)), 12,2,17)
   56  end
 
-picotron/drive/dumps/system/demos/highway.p64:
+drive/dumps/system/demos/highway.p64:
   83  	fillp()
   84: 	print(string.format("%.4f %dfps",stat(1), stat(7)),2,2,5)
   85
 
-picotron/drive/dumps/system/demos/pixeldust.p64:
+drive/dumps/system/demos/pixeldust.p64:
   48  	print("dots:"..max_idx,2,2,13)
   49: 	print("cpu: "..string.format("%.3f",stat(1)),2,12)
   50: 	print(stat(7).."fps",2,24)
   51
 
-picotron/drive/dumps/system/demos/proggy.p64:
+drive/dumps/system/demos/proggy.p64:
   253  	-- show fps
   254: 	print(string.format("cpu:%.3f",stat(1)), 420,5,13)
   255  end
 
-picotron/drive/dumps/system/demos/spiral.p64:
+drive/dumps/system/demos/spiral.p64:
   22  	end
   23: 	print(string.format("%.5f",stat(1)),2,2,7)
   24  end
 
-picotron/drive/dumps/system/lib/events.lua:
+drive/dumps/system/lib/events.lua:
   151  	for i=1,255 do
   152: 		local mapped_name = stat(302, i)
   153  		if (mapped_name and mapped_name ~= "") then
@@ -804,7 +804,7 @@ picotron/drive/dumps/system/lib/events.lua:
   449: 		elseif stat(318) == 1 then
   450  			-- web: when ctrl-v, pretend the v didn't happen.
 
-picotron/drive/dumps/system/lib/foot.lua:
+drive/dumps/system/lib/foot.lua:
   33
   34: -- printh("entering mainloop at cpu:"..flr(stat(1)/100).."%   mem:"..flr(stat(0)/1024).."k")
   35
@@ -813,7 +813,7 @@ picotron/drive/dumps/system/lib/foot.lua:
   67: 				local fps = stat(7)
   68  				if (fps < 60) __process_event_messages() _update()
 
-picotron/drive/dumps/system/lib/fs.lua:
+drive/dumps/system/lib/fs.lua:
    92  		-- bbs web player
    93: 		if ((stat(317) & 0x3) == 0x1) then
    94: 			if (stat(152) == "localhost") return "http://localhost" -- dev
@@ -829,12 +829,12 @@ picotron/drive/dumps/system/lib/fs.lua:
   109: 		if (stat(317) > 0) return ""
   110  		-- binaries: use cdn
 
-picotron/drive/dumps/system/lib/gui_ed.lua:
+drive/dumps/system/lib/gui_ed.lua:
   1468
   1469: --		printh(string.format("cpu %.3f",stat(1)),440,2,7)
   1470
 
-picotron/drive/dumps/system/lib/head.lua:
+drive/dumps/system/lib/head.lua:
    203  	-- sandboxed programs can not create processes
    204: 	if _env().sandbox and ((stat(307) & 0x1) == 0) then -- sandboxed program that is not a trusted system app
    205
@@ -863,7 +863,7 @@ picotron/drive/dumps/system/lib/head.lua:
   1065: 		(stat(307) & 0x1) == 1 or                     -- can always send message if is bundled /system app (filenav)
   1066  		proc_id == 3 or                               -- can always send message to wm
 
-picotron/drive/dumps/system/pm/pm.lua:
+drive/dumps/system/pm/pm.lua:
   17  	-- headless script: shutdown when no userland processes remaining
   18: 	if (stat(315) > 0 and #_get_process_list() <= 3) _signal(33)
   19
@@ -872,12 +872,12 @@ picotron/drive/dumps/system/pm/pm.lua:
   22: 	if (stat(317) > 0 and #_get_process_list() <= 3) _signal(33)
   23
 
-picotron/drive/dumps/system/screensavers/breach.p64:
+drive/dumps/system/screensavers/breach.p64:
   69
   70: 	--print(stat(1),400,2,7)
   71  	--circ(mx,my,rr/2,7)
 
-picotron/drive/dumps/system/screensavers/bunny.p64:
+drive/dumps/system/screensavers/bunny.p64:
   178  function _draw()
   179: 	--printh("_draw() start "..stat(1))
   180  	cls()
@@ -887,17 +887,17 @@ picotron/drive/dumps/system/screensavers/bunny.p64:
   245: 	--printh("_draw() end "..stat(1))
   246  end
 
-picotron/drive/dumps/system/screensavers/dizzy.p64:
+drive/dumps/system/screensavers/dizzy.p64:
   135  	local str=string.format("points: %d  cpu: %3.3f (%dfps)",
   136: 		#p, stat(1), stat(7))
   137  	print(str, 11, 11, 0)
 
-picotron/drive/dumps/system/screensavers/swoosh.p64:
+drive/dumps/system/screensavers/swoosh.p64:
   53  	end
   54: 	print(string.format("cpu:%.3f",stat(1)),2,2)
   55  end
 
-picotron/drive/dumps/system/util/load.lua:
+drive/dumps/system/util/load.lua:
    48  	-- convert to UTC
    49: 	when = date(nil, when, stat(87))
    50
@@ -906,12 +906,12 @@ picotron/drive/dumps/system/util/load.lua:
   136: if (meta and type(meta.runtime) == "number" and meta.runtime > stat(5)) then
   137  	print("** warning: this cart was created using a future version of picotron.")
 
-picotron/drive/dumps/system/util/save.lua:
+drive/dumps/system/util/save.lua:
   51
   52: store_metadata("/ram/cart", {runtime = stat(5)})
   53
 
-picotron/drive/dumps/system/wm/wm.lua:
+drive/dumps/system/wm/wm.lua:
     50
     51: -- to do: remove; can use a stat() and keep track at a lower level (do anyway for battery saver logic)
     52  local last_input_activity_t = 0
