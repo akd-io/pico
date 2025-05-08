@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "download": "bun run picotron/versions/download-versions.ts",
-    "unzip": "bun run picotron/versions/unzip.ts",
-    "print-envs": "bun run picotron/versions/print-envs.ts"
+    "download": "bun run versions/download-versions.ts",
+    "unzip": "bun run versions/unzip.ts",
+    "print-envs": "bun run versions/print-envs.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
