@@ -1,4 +1,4 @@
-# AKD's Picotron projects
+# AKD's Picotron Projects
 
 ## Picotron
 
