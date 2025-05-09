@@ -21,26 +21,24 @@ include("hooks/useCartPaths.lua")
 local width = 480
 local height = 270
 
-function _init()
-
-end
-
-function _update()
-
-end
-
 local ramExploreCacheDirPath = "/ram/explore-cache"
 local cartCachePodFilePath = ramExploreCacheDirPath .. "/allCartPaths.pod"
-
 local categoryPaths = {
   "bbs://new",
   "bbs://featured",
   "bbs://wip"
 }
-
 local labelCachePodFilePath = ramExploreCacheDirPath .. "/labels.pod"
 
-local frame = 0
+local function StatsOverlay()
+  return {
+    { Wrap, print, "\^o0ffFrame: " .. frame, 2, 2,      12 },
+    { Wrap, print, "\^o0ffMEM: " .. stat(0), 2, 2 + 10, 12 },
+    { Wrap, print, "\^o0ffCPU: " .. stat(1), 2, 2 + 20, 12 },
+    { Wrap, print, "\^o0ffFPS: " .. stat(7), 2, 2 + 30, 12 },
+  }
+end
+
 function App()
   mkdirr(ramExploreCacheDirPath)
 
@@ -97,18 +95,17 @@ function App()
     labels[5] and { drawnCartPaths[5], Label, labels[5], 5, width, height } or false,
     labels[6] and { drawnCartPaths[6], Label, labels[6], 6, width, height } or false,
     labels[7] and { drawnCartPaths[7], Label, labels[7], 7, width, height } or false,
+    { Wrap,        clip },
 
-    { Wrap, clip },
-    { Wrap, print, "\^o0ffFrame: " .. frame,                               0, 0,      12 },
-    { Wrap, print, "\^o0ffMEM: " .. stat(0),                               0, 0 + 10, 12 },
-    { Wrap, print, "\^o0ffCPU: " .. stat(1),                               0, 0 + 20, 12 },
-    { Wrap, print, "\^o0ffFPS: " .. stat(7),                               0, 0 + 30, 12 },
-    { Wrap, print, "\^o0ffselectedCategoryPath: " .. selectedCategoryPath, 0, 0 + 40, 12 },
-    { Wrap, print, "\^o0ffselectedCartIndex: " .. state.selectedCartIndex, 0, 0 + 50, 12 },
-    { Wrap, print, "\^o0ffselectedCartPath: " .. tostr(selectedCartPath),  0, 0 + 60, 12 },
+    { Wrap,        print, "\^o0ffselectedCategoryPath: " .. selectedCategoryPath, 2, 2 + 40, 12 },
+    { Wrap,        print, "\^o0ffselectedCartIndex: " .. state.selectedCartIndex, 2, 2 + 50, 12 },
+    { Wrap,        print, "\^o0ffselectedCartPath: " .. tostr(selectedCartPath),  2, 2 + 60, 12 },
+
+    { StatsOverlay }
   }
 end
 
+frame = 0
 function _draw()
   frame += 1
   renderRoot(App)
