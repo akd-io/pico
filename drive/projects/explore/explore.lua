@@ -99,13 +99,13 @@ function App()
     labels[7] and { drawnCartPaths[7], Label, labels[7], 7, width, height } or false,
 
     { Wrap, clip },
-    { Wrap, print, "Frame: " .. frame,                               0, 0,      12 },
-    { Wrap, print, "MEM: " .. stat(0),                               0, 0 + 10, 12 },
-    { Wrap, print, "CPU: " .. stat(1),                               0, 0 + 20, 12 },
-    { Wrap, print, "FPS: " .. stat(7),                               0, 0 + 30, 12 },
-    { Wrap, print, "selectedCategoryPath: " .. selectedCategoryPath, 0, 0 + 40, 12 },
-    { Wrap, print, "selectedCartIndex: " .. state.selectedCartIndex, 0, 0 + 50, 12 },
-    { Wrap, print, "selectedCartPath: " .. tostr(selectedCartPath),  0, 0 + 60, 12 },
+    { Wrap, print, "\^o0ffFrame: " .. frame,                               0, 0,      12 },
+    { Wrap, print, "\^o0ffMEM: " .. stat(0),                               0, 0 + 10, 12 },
+    { Wrap, print, "\^o0ffCPU: " .. stat(1),                               0, 0 + 20, 12 },
+    { Wrap, print, "\^o0ffFPS: " .. stat(7),                               0, 0 + 30, 12 },
+    { Wrap, print, "\^o0ffselectedCategoryPath: " .. selectedCategoryPath, 0, 0 + 40, 12 },
+    { Wrap, print, "\^o0ffselectedCartIndex: " .. state.selectedCartIndex, 0, 0 + 50, 12 },
+    { Wrap, print, "\^o0ffselectedCartPath: " .. tostr(selectedCartPath),  0, 0 + 60, 12 },
   }
 end
 
