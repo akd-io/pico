@@ -3,7 +3,6 @@ include("rpc.lua")
 local displayText = "loading"
 
 local lsRPC = createRPC({
-  -- TODO: Support custom includes?
   funcName = "ls",
   --- event is optional.
   --- The default is `rpc_response_<funcName>`.

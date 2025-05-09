@@ -1,15 +1,21 @@
 --[[
-  - Change name from RPC.
-    - RPC is aleady only true in a vague sense, as we're only communicating between processes.
-    - But also, the call of the local function wont return the result of the remote function.
-      It will be caught in by the event handler.
-    - We can release a proper RPC library later, on top of a promise abstraction if I or someone else makes one.
-
-  - In usage, it's possible to specify `id` in the env patch, which will be returned in the response.
-    This is useful for identifying the response when multiple RPC calls are made in quick succession.
-    - It would have been nice to redesign createRPC to include `id` in the event name, eg. `rpc_response_<funcName>_<id>`.
-      - But this is not possible, as unsubscribing from events is not supported.
-        We would end up with thousands of subscriptions if we did this.
+  TODOs:
+  - When we have a promise/async/await library, abstract away `onEvent`.
+  - Support custom includes? An array of strings dynamically included by the
+    worker.
+  - This will allow us to inject code into the worker.
+  - Or maybe this just gets us into the same territory as building a lib
+    that makes it easy to create different branches for different process
+    instances of the same file?
+  - In usage, it's possible to specify `id` in the env patch, which will be
+    returned in the response.
+    This is useful for identifying the response when multiple RPC calls are
+    made in quick succession.
+  - It would have been nice to redesign createRPC to include `id` in the event
+    name, eg. `rpc_response_<funcName>_<id>`.
+  - But this is not possible, as unsubscribing from events is not supported.
+    We would end up with thousands of subscriptions if we did this.
+  - HTTP RPC?
 ]]
 
 local seenEvents = {}
