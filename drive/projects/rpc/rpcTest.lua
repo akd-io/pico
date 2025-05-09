@@ -8,7 +8,7 @@ local lsRPC = createRPC({
   --- event is optional.
   --- The default is `rpc_response_<funcName>`.
   --- If you need several event handlers targeting the same function, this allows you to specify a custom event.
-  event = "testevent",
+  --event = "my_custom_event",
   onEvent = function(msg)
     --- RPC adds the helper function `msg.rpc.unpackResult()`, which unpacks the result of the remote function call.
     --- This is because `unpack(array)` has some edge cases around non-trailing nil values, `{nil, 123}` for example.
@@ -16,7 +16,7 @@ local lsRPC = createRPC({
 
     --- RPC adds `msg.rpc._packedResult` if you really need the packed result.
     --- Its use is discouraged, for the reasons stated above.
-    local packedResult = msg.rpc._packedResult
+    --local packedResult = msg.rpc._packedResult
 
     --- `id` was added in the call down below, and is sent back unchanged by the worker.
     displayText = "Request " .. msg.rpc.id .. ": " .. pod(lsResult)

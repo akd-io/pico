@@ -15,7 +15,6 @@
 local seenEvents = {}
 
 --- `createRPC` returns a function that can be called to invoke another function, specified by `createOptions.funcName`, in a worker thread.
----
 --- `createRPC` will automatically wire up `on_event` using event `worker_response_<funcName>`
 ---
 ---@param createOptions {
