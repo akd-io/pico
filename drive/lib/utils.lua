@@ -1,5 +1,9 @@
 -- TODO: Consider using iterator patterns instead for some of these? For example, why isn't range() an iterator?
 
+function textWidth(text)
+  return print(text, 0, 1000)
+end
+
 function range(n)
   local result = {}
   for i = 1, n do

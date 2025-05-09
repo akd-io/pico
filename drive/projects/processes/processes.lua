@@ -52,7 +52,7 @@ function _draw()
 
   local columnWidth = {}
   foreach(processAttributes, function(key)
-    local keyWidth = print(key, 0, -1000)
+    local keyWidth = textWidth(key)
     for process in all(processes) do
       local valueString = string.format(formatMap[key], process[key])
       keyWidth = max(keyWidth, print(valueString, 0, -1000))
