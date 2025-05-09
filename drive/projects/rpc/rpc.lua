@@ -32,6 +32,7 @@ function createRPC(createOptions)
   local event = "rpc_response_" .. funcName
 
   if createOptions.onEvent then
+    --printh("[rpc] createRPC: onEvent is specified.")
     assert(type(createOptions.onEvent) == "function", "createOptions.onEvent must be a function or nil.")
 
     local optionsEvent = createOptions.event -- For type inference
@@ -43,8 +44,16 @@ function createRPC(createOptions)
     assert(not seenEvents[event], "createRPC was called twice with the same event name: " .. event)
     seenEvents[event] = true
 
+    --printh("[rpc] createRPC: on_event(" .. event .. ")")
     on_event(event, function(msg)
-      msg.unpackResult = function() return unpack(msg.packedResult, 1, msg.packedResult.n) end
+      --printh("[rpc] Got event " .. msg.event .. " from process " .. msg._from)
+      --printh("[rpc] Msg: " .. pod(msg))
+      local function unpackResult()
+        return unpack(msg.rpc._packedResult, 1, msg.rpc._packedResult.n)
+      end
+      --printh("[rpc] type(unpackResult) = " .. type(unpackResult))
+      msg.rpc.unpackResult = unpackResult
+      --printh("[rpc] Calling onEvent with msg: " .. pod(msg))
       createOptions.onEvent(msg)
     end)
   end
@@ -66,7 +75,8 @@ function createRPC(createOptions)
       rpc.event = event
       rpc.doReturn = true
     end
-    create_process("/lib/rpcWorker.lua", {
+    -- TODO: Calculate path dynamically to be this file's dir + "/rpcWorker.lua"
+    create_process("/projects/rpc/rpcWorker.lua", {
       rpc = rpc
     })
   end
