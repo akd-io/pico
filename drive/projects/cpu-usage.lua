@@ -29,19 +29,21 @@ local draw = 0
 function _draw()
   draw += 1
 
-  local n = 2 ^ mag
-
-  for i = 1, n do
-    -- Do nothing.
-  end
-
   cls()
+
   print("processId: " .. pid())
   print("pwd: " .. tostr(pwd()))
   print("pwf: " .. tostr(pwf()))
   print("draw: " .. draw)
   print("update: " .. update)
-  print("CPU: " .. stat(1))
+  print("CPU (pre): " .. stat(1))
+
+  local n = 2 ^ mag
+  for i = 1, n do
+    -- Do nothing.
+  end
+
+  print("CPU (post): " .. stat(1))
   print("FPS: " .. stat(7))
   print("mag: " .. mag)
   print("n: " .. n)
