@@ -55,6 +55,7 @@
     - I should probably just release a `calcNextSpringPosition` function
 ]]
 
+--[=[
 function __initMotion()
   local SpringConfigContext = createContext({
     stiffness = 100,
@@ -129,3 +130,4 @@ function __initMotion()
 end
 
 local useSprings, useSpring, useTransition, AnimatePresence, Motion = __initMotion()
+]=]

@@ -95,6 +95,7 @@
 --[[const]]
 DEV = true
 
+--[[
 function __initReact()
   -- Holds the state of component instances
   local instances = {}
@@ -329,3 +330,4 @@ function __initReact()
 end
 
 local renderRoot, useState, createContext, useContext, useMemo = __initReact()
+]]
