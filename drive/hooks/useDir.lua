@@ -8,8 +8,8 @@ include("/lib/describe.lua")
 -- TODO: placeholderData?
 
 function useDirs(paths)
-  local hookInstanceId = tostr(useState({}))
-  --printh("hookInstanceId: " .. hookInstanceId)
+  local hookInstanceId = tostring(useState({})) -- Keep using `tostring`. `tostr(useState({}))` returns `0x0`, as `setState` is passed as `tostr`'s second param.
+  --printh("[useDir] hookInstanceId: " .. hookInstanceId)
 
   --- Path to PID map
   ---@type table<string,number?>
