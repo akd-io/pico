@@ -1,6 +1,6 @@
 -- TODO: Consider using iterator patterns instead for some of these? For example, why isn't range() an iterator?
 
-function textWidth(text)
+function getTextWidth(text)
   return print(text, 0, 1000)
 end
 
