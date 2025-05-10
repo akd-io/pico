@@ -8,15 +8,15 @@ include("/lib/describe.lua")
 -- TODO: placeholderData?
 
 function useDirs(paths)
-  local hookInstanceId = tostring(useState({}))
+  local hookInstanceId = tostr(useState({}))
   --printh("hookInstanceId: " .. hookInstanceId)
 
   --- Path to PID map
-  ---@type { [string]: number? }
+  ---@type table<string,number?>
   local workerIDs = useState({})
 
   --- Path to {result, loading} map
-  ---@type { [string]: { result?: table, loading: boolean } }
+  ---@type table<string,{ result?: table, loading: boolean }>
   local states, setStates = useState({})
 
   useMemo(function()
