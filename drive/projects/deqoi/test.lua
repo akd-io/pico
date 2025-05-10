@@ -2,7 +2,7 @@ include("deqoi.lua")
 
 local qoiString = fetch("/desktop/label.qoi")
 
-printh(qoiString:sub(1, 4))
+printh("[deqoi test] " .. qoiString:sub(1, 4))
 
 local imageUserdata = qoiDecode(qoiString)
 

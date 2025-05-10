@@ -22,4 +22,4 @@ end
 store(podPath, stats)
 local str = describe(stats)
 store(txtPath, str)
-printh(str)
+printh("[stat] " .. str)

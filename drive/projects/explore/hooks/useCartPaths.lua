@@ -19,19 +19,19 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
   end
 
   local categoryDirs = useDirs(categoryPaths)
-  --printh("useCartPaths: Count categoryDirs: " .. #categoryDirs)
-  --printh("useCartPaths: categoryDirs: " .. describe(categoryDirs))
+  --printh("[useCartPaths] Count categoryDirs: " .. #categoryDirs)
+  --printh("[useCartPaths] categoryDirs: " .. describe(categoryDirs))
 
   local categoryDirsLoaded = useMemo(function()
-    printh("useCartPaths: categoryDirs changed!")
+    --printh("[useCartPaths] categoryDirs changed!")
     return objectEvery(categoryDirs, function(categoryDir)
       return categoryDir.loading == false
     end)
   end, { categoryDirs })
 
   local categoryPagePaths = useMemo(function()
-    printh("useCartPaths: categoryDirsLoaded changed!")
-    printh("useCartPaths: categoryDirsLoaded = " .. tostr(categoryDirsLoaded))
+    --printh("[useCartPaths] categoryDirsLoaded changed!")
+    --printh("[useCartPaths] categoryDirsLoaded = " .. tostr(categoryDirsLoaded))
     local categoryPagePaths = {}
     for categoryPath in all(categoryPaths) do
       categoryPagePaths[categoryPath] = {}
@@ -60,8 +60,8 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
   end
 
   local pageDirsLoaded = useMemo(function()
-    printh("useCartPaths: categoryPageDirs changed!")
-    printh("useCartPaths: categoryPageDirs = " .. tostr(categoryPageDirs))
+    --printh("[useCartPaths] categoryPageDirs changed!")
+    --printh("[useCartPaths] categoryPageDirs = " .. describe(categoryPageDirs))
     if not categoryDirsLoaded then return false end
     return objectEvery(categoryPaths, function(categoryPath)
       local pageDirs = categoryPageDirs[categoryPath]
@@ -72,8 +72,8 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
   end, categoryPageDirsDep) -- TODO: `categoryPageDirsDep` is an array and is not wrapped in {} on purpose. But is this a safe deps array in edge cases too? That is, is it impossible to for its length to change.
 
   local allCartPaths = useMemo(function()
-    printh("useCartPaths: pageDirsLoaded changed!")
-    printh("useCartPaths: pageDirsLoaded = " .. tostr(pageDirsLoaded))
+    --printh("[useCartPaths] pageDirsLoaded changed!")
+    --printh("[useCartPaths] pageDirsLoaded = " .. tostr(pageDirsLoaded))
 
     ---@type table<string, string[]>
     local allCartPaths = {}
@@ -101,8 +101,7 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
     -- TODO: - Map to local cart cache folder if we end up supporting that? Will also lose the opportunity to sort per category.
     -- TODO: - Maybe we should export both (`bbs://category/page/cart.p64` or `/ram/explore-cache/carts/cart.p64`) AND `bbs://cart.p64`?
 
-    printh("allCartPaths:")
-    printh(describe(allCartPaths))
+    --printh("[useCartPaths] allCartPaths = " .. describe(allCartPaths))
 
     store(cartCachePodFilePath, allCartPaths)
 

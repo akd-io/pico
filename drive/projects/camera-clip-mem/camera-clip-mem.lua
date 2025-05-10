@@ -8,7 +8,7 @@ function _draw()
 
   for i = 0x5500, 0x5540 do
     if peek(i) ~= 0 then
-      printh(tostr(i, true) .. " " .. tostr(peek(i), true))
+      printh("[camera-clip-mem] " .. tostr(i, true) .. " " .. tostr(peek(i), true))
       unrelatedAddresses[i] = true
     end
   end
@@ -21,7 +21,7 @@ function _draw()
   for i = 0x5500, 0x5540 do
     if peek(i) ~= 0 then
       if not unrelatedAddresses[i] then
-        printh(tostr(i, true) .. " " .. tostr(peek(i), true))
+        printh("[camera-clip-mem] " .. tostr(i, true) .. " " .. tostr(peek(i), true))
       end
     end
   end
@@ -34,7 +34,7 @@ function _draw()
   for i = 0x5500, 0x5540 do
     if peek(i) ~= 0 then
       if not unrelatedAddresses[i] then
-        printh(tostr(i, true) .. " " .. tostr(peek(i), true))
+        printh("[camera-clip-mem] " .. tostr(i, true) .. " " .. tostr(peek(i), true))
       end
     end
   end
@@ -47,7 +47,7 @@ function _draw()
   for i = 0x5500, 0x5540 do
     if peek(i) ~= 0 then
       if not unrelatedAddresses[i] then
-        printh(tostr(i, true) .. " " .. tostr(peek(i), true))
+        printh("[camera-clip-mem] " .. tostr(i, true) .. " " .. tostr(peek(i), true))
       end
     end
   end

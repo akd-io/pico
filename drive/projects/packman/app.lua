@@ -199,12 +199,12 @@ local function useCategoryCarts(categoryUrl)
       local carts = {}
 
       local categoryDir = ls(categoryUrl)
-      printh(categoryUrl .. ": " .. describe(categoryDir))
+      printh("[packman app] " .. categoryUrl .. ": " .. describe(categoryDir))
       for _, pageName in ipairs(categoryDir) do
         local pageUrl = categoryUrl .. "/" .. pageName
         local pageDir = ls(pageUrl)
         if (#pageDir == 0) then break end
-        printh(pageUrl .. ": " .. describe(pageDir))
+        printh("[packman app] " .. pageUrl .. ": " .. describe(pageDir))
         for _, cart in ipairs(pageDir) do
           add(carts, cart)
         end

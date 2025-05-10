@@ -19,9 +19,9 @@ function useQuery(url)
     on_event(
       "fetch_result",
       function(msg)
-        --printh(describe(msg))
+        --printh("[useQuery] "..describe(msg))
         local packedFetchResult = msg.packedFetchResult
-        --printh(describe(packedFetchResult))
+        --printh("[useQuery] "..describe(packedFetchResult))
         local a, b, c = unpack(packedFetchResult, 1, packedFetchResult.n)
         --printh("a: " .. tostr(a))
         --printh("b: " .. tostr(b))

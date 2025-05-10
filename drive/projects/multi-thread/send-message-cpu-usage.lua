@@ -76,7 +76,7 @@ local functionMap = {
         state.total += 1
         state.lastFrame += 1
         --state.lastMessageLength = #response.message
-        --printh(type(response.message))
+        --printh("[send-message-cpu-usage] " .. type(response.message))
       end)
     end,
     _draw = function()

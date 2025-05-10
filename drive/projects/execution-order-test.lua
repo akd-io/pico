@@ -31,5 +31,5 @@ window({
 })
 
 function _draw()
-  printh(tostr(pid()))
+  printh("[execution-order-test] " .. tostr(pid()))
 end

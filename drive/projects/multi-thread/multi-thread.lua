@@ -16,13 +16,13 @@ local mathWorker = create_process("math-worker.lua")
 local function add(a, b)
   local request = { event = "add", a = a, b = b }
   printh("Sending request:")
-  printh(describe(request))
+  printh("[multi-thread] " .. describe(request))
   send_message(mathWorker, { event = "add", a = a, b = b })
 end
 
 on_event("add_result", function(response)
   printh("Received response:")
-  printh(describe(response))
+  printh("[multi-thread] " .. describe(response))
   printh("Killing math worker with ID " .. mathWorker .. "...")
   send_message(2, { event = "kill_process", proc_id = mathWorker })
   printh("Exiting...")
