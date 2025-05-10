@@ -20,50 +20,51 @@ function useDirs(paths)
   local states, setStates = useState({})
 
   useMemo(function()
-    --printh("useDirs: paths param changed!")
+    --printh("[useDir]: paths param changed!")
     -- TODO: Traverse workerIDs instead of paths to kill workers that are no longer needed
     -- TODO: Also remove states of irrelevant paths, unless a specific cache option is set?
 
     for path in all(paths) do
       if (states[path] == nil) then
-        states[path] = {
-          result = nil,
-        }
+        states[path] = {}
+        --printh("[useDir] Initialized state for path " .. path)
+        --printh("[useDir] states[path]: " .. describe(states[path]))
       end
       states[path].loading = true
 
       if (workerIDs[path] != nil) then
         -- Kill worker
-        --printh("Killing worker for path " .. path)
+        --printh("[useDir] Killing worker for path " .. path)
         send_message(2, { event = "kill_process", proc_id = workerIDs[path] })
       end
       workerIDs[path] = create_process("/hooks/useDirWorker.lua", { argv = { path, hookInstanceId } })
-      --printh("Spawned worker: " .. tostr(workerIDs[path]))
+      --printh("[useDir] Spawned worker: " .. tostr(workerIDs[path]))
     end
   end, { paths })
 
   useMemo(function()
-    --printh("useDirs: Initial render: Setting up on_event.")
+    --printh("[useDir] Initial render: Setting up on_event.")
     on_event(
       "dir_result",
       function(msg)
         if (hookInstanceId != msg.hookInstanceId) then
           -- TODO: Is it possible to only call on_event once per application, while keeping the closure???
           -- TODO: So we don't have to do this?
-          --printh("Wrong hook instance. Am " .. hookInstanceId .. " but got " .. msg.hookInstanceId)
+          --printh("[useDir] Wrong hook instance. Am " .. hookInstanceId .. " but got " .. msg.hookInstanceId)
           return
         end
-        --printh("Received dir_result:"
-        --printh(describe(msg))
+        --printh("[useDir] Received dir_result:" .. describe(msg))
         local path = msg.path
         local packedLsResult = msg.packedLsResult
-        --printh(describe(packedLsResult))
+        --printh("[useDir] packedLsResult: "describe(packedLsResult))
         local a, b, c = unpack(packedLsResult, 1, packedLsResult.n)
-        --printh("a: " .. tostr(a))
-        --printh("b: " .. tostr(b))
-        --printh("c: " .. tostr(c))
+        --printh("[useDir] a: " .. tostr(a))
+        --printh("[useDir] b: " .. tostr(b))
+        --printh("[useDir] c: " .. tostr(c))
 
         local newStates = shallowCopy(states)
+        --printh("[useDir] states: " .. describe(states))
+        --printh("[useDir] newStates (post): " .. describe(newStates))
         newStates[path].result = a
         newStates[path].loading = false
         states = setStates(newStates)
