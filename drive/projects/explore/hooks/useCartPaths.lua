@@ -69,11 +69,13 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
         return pageDir.loading == false
       end)
     end)
-  end, categoryPageDirsDep) -- TODO: `categoryPageDirsDep` is not wrapped on purpose. But is this a safe deps array in edge cases too? That is, is it impossible to for its length to change.
+  end, categoryPageDirsDep) -- TODO: `categoryPageDirsDep` is an array and is not wrapped in {} on purpose. But is this a safe deps array in edge cases too? That is, is it impossible to for its length to change.
 
   local allCartPaths = useMemo(function()
     printh("useCartPaths: pageDirsLoaded changed!")
     printh("useCartPaths: pageDirsLoaded = " .. tostr(pageDirsLoaded))
+
+    ---@type table<string, string[]>
     local allCartPaths = {}
     for categoryPath in all(categoryPaths) do
       allCartPaths[categoryPath] = {}
@@ -96,8 +98,8 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
 
     -- TODO: Consider mapping all cart paths from `bbs://category/page/cart.p64` to `bbs://cart.p64`, so new updates categories can't invalidate a cart url.
     -- TODO: - Or maybe this is bad, as we will lose the opportunity to sort per category then. Users can just map to `bbs://cart.p64` themselves.
-    -- TODO: Map to local cart cache folder if we up supporting that? Will also lose the opportunity to sort per category.
-    -- TODO: Maybe we should export both ()`bbs://category/page/cart.p64` or `/ram/explore-cache/carts/cart.p64`) AND `bbs://cart.p64`?
+    -- TODO: - Map to local cart cache folder if we end up supporting that? Will also lose the opportunity to sort per category.
+    -- TODO: - Maybe we should export both (`bbs://category/page/cart.p64` or `/ram/explore-cache/carts/cart.p64`) AND `bbs://cart.p64`?
 
     printh("allCartPaths:")
     printh(describe(allCartPaths))
