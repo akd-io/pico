@@ -13,8 +13,8 @@ __initMouseProvider = function()
 
     local x, y, buttonBitfield, wheel_x, wheel_y = mouse()
 
-    local leftDown = buttonBitfield & 0b01 > 0
-    local rightDown = buttonBitfield & 0b10 > 0
+    local leftDown = buttonBitfield & 0x1 > 0
+    local rightDown = buttonBitfield & 0x2 > 0
 
     local leftDragStart = useMemo(
       function() return { x, y } end,
