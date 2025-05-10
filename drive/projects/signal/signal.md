@@ -8,7 +8,7 @@ This document will try to document every `_signal()` code.
 
 - `_signal(16)`
   - Toggles audio capture.
-  - Found with the help of `@_maxine_` on Discord [here](https://discord.com/channels/1068899948592107540/1358151110917099785/1366298848590434376).
+  - Found with the help of `_maxine_` on Discord [here](https://discord.com/channels/1068899948592107540/1358151110917099785/1366298848590434376).
   - See also `stat(322)` in the [`stat()` Documentation](../stat/stats.md#results)
 - `_signal(18)`
   - Starts video capture.
@@ -32,7 +32,7 @@ This document will try to document every `_signal()` code.
   - It is unknown though, what exact side-effect this has. That is, when the presumed flag set by `_signal(35)` is checked.
     - Calling `_signal(35)` from un-jettisoned userland code does not reboot the system for example.
   - It is used in `startup.lua` to secure boot when both control keys are held down.
-  - Found with the help of `@kutuptilkisi` on Discord.
+  - Found with the help of `kutuptilkisi` on Discord.
 - `_signal(36)`
   - Functionality unknown.
   - Described to "finish loading core processes" in `wm.lua`.

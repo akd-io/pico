@@ -23,7 +23,7 @@ This file attempts to document all CLI arguments, enriching the official documen
     }
     ```
   - We still don't know how to pass arguments to headless scripts.
-  - Found with the help of `@_maxine_` on Discord.
+  - Found with the help of `_maxine_` on Discord.
   - Later found to have been under `0.1.1` in the [changelog](https://www.lexaloffle.com/dl/docs/picotron_changelog.txt).
   - [Changelog](https://www.lexaloffle.com/dl/docs/picotron_changelog.txt):
     - `0.1.1`:
@@ -41,13 +41,13 @@ This file attempts to document all CLI arguments, enriching the official documen
   - Not tested yet.
   - Presumably the length of recorded gifs.
   - Unit of `n` is unknown.
-  - Found by `@_maxine_` on Discord.
+  - Found by `_maxine_` on Discord.
   - Not mentioned in the [Changelog](https://www.lexaloffle.com/dl/docs/picotron_changelog.txt).
   - It is currently unknown, when this argument was added.
     - TODO: Analyze this using `strings` on the binaries in [`/versions/out/`](/versions/out/).
 - `picotron -use_system_rom`
   - Functionality currently unknown.
-  - Found by `@_maxine_` on Discord.
+  - Found by `_maxine_` on Discord.
   - Not mentioned in the [Changelog](https://www.lexaloffle.com/dl/docs/picotron_changelog.txt).
   - It is currently unknown, when this argument was added.
     - TODO: Analyze this using `strings` on the binaries in [`/versions/out/`](/versions/out/).

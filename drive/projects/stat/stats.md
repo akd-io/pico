@@ -59,11 +59,11 @@ This file attempts to document all `stat()` codes, enriching the official docume
 - `stat(302, keycode)` (undocumented)
   - Returns a human-readable name for the given keycode.
   - Seems to surface SDL's [GetKeyName](https://wiki.libsdl.org/SDL2/SDL_GetKeyName) function.
-  - Thanks to `@_maxine_`'s [message](https://discord.com/channels/1068899948592107540/1358151110917099785/1366167587209089045) on Discord.
+  - Thanks to `_maxine_`'s [message](https://discord.com/channels/1068899948592107540/1358151110917099785/1366167587209089045) on Discord.
   - See [code references](#302-search)
 - `stat(307)` (undocumented)
   - Returns `1.0` if filepath starts with `/system/`.
-  - Thanks to `@_maxine_`'s [message](https://discord.com/channels/1068899948592107540/1358151110917099785/1366825534167847013) on Discord.
+  - Thanks to `_maxine_`'s [message](https://discord.com/channels/1068899948592107540/1358151110917099785/1366825534167847013) on Discord.
   - Used in `head.lua` to determine if a program is a "trusted system app".
   - In my testing, `stat(307)` also returns `1.0` in user-made scripts located in `/system/`.
   - The code in `head.lua` specifically checks `stat(307) & 0x1`, which might indicate `stat(307)` was a bitfield in past versions, and `0b1` was code for "trusted system apps".
@@ -102,11 +102,11 @@ This file attempts to document all `stat()` codes, enriching the official docume
   - No code references.
 - `stat(315)` (undocumented)
   - Presence of the `-x` CLI argument when running headless using `picotron -x <path/to/my/script.lua>`.
-  - Found with the help of `@_maxine_` on Discord.
+  - Found with the help of `_maxine_` on Discord.
   - See [code references](#315-search)
 - `stat(316)` (undocumented)
   - The path specified when running headless using `picotron -x <path/to/my/script.lua>`.
-  - Found with the help of `@_maxine_` on Discord.
+  - Found with the help of `_maxine_` on Discord.
   - See [code references](#316-search)
 - `stat(317)` (undocumented)
   - Returns:
@@ -114,7 +114,7 @@ This file attempts to document all `stat()` codes, enriching the official docume
     - `1.0` when running on the BBS web player.
     - `0.0` otherwise.
   - See [`test-317.lua`](./test-317/test-317.lua) for more details.
-  - Found with the help of `@_maxine_` on Discord.
+  - Found with the help of `_maxine_` on Discord.
   - See [code references](#317-search)
 - `stat(318)` (undocumented)
   - Returns:
@@ -132,7 +132,7 @@ This file attempts to document all `stat()` codes, enriching the official docume
   - Returns `1.0` during audio capture, and `0.0` otherwise.
   - Audio capture can be started and stopped with `CTRL+0`.
   - Audio files are saved in an unknown format with a `.raw` extension however.
-  - Found by `@_maxine_` on Discord [here](https://discord.com/channels/1068899948592107540/1358151110917099785/1366298848590434376).
+  - Found by `_maxine_` on Discord [here](https://discord.com/channels/1068899948592107540/1358151110917099785/1366298848590434376).
   - See [code references](#321-search)
   - See also `_signal(16)` in the [`_signal()` Documentation](../signal/signal.md#results)
 - `stat(330)` (undocumented)
@@ -141,7 +141,7 @@ This file attempts to document all `stat()` codes, enriching the official docume
   - Our current understanding is that battery saver will cap calls to `_update()` and `_draw()` to 30 times per second, when there has been no user input for 500 milliseconds.
   - Both key presses, mouse button presses, mouse movement, and moving the Picotron window, seems to count as user input, and resets the 500ms timer.
   - See also: [`test-330.lua`](./test-330.lua), or a gif of it [here](https://discord.com/channels/1068899948592107540/1358151110917099785/1368733765290950706).
-  - Found with the help of `@_maxine_`'s [message](https://discord.com/channels/1068899948592107540/1358151110917099785/1366547309399249028) on Discord.
+  - Found with the help of `_maxine_`'s [message](https://discord.com/channels/1068899948592107540/1358151110917099785/1366547309399249028) on Discord.
   - TODO: Test if battery saver just caps `_update()` and `_draw()` to 30 times per second, or if it halves updates and draws in cases of exceeding the 0.9 CPU usage threshold.
   - See [code references](#330-search)
 - `stat(400 + c, 0)` note is held (0 false 1 true)
@@ -172,7 +172,7 @@ This file attempts to document all `stat()` codes, enriching the official docume
   - See [code references](#987-search)
 - `stat(988)` (undocumented)
   - Returns `1.0` if both left and right control keys are held down, and `0.0` otherwise.
-  - Found by `@kutuptilkisi` on Discord.
+  - Found by `kutuptilkisi` on Discord.
   - See [code references](#988-search)
 
 ## Official `stat()` documentation

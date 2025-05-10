@@ -189,13 +189,14 @@ Metamethods not mentioned in the operator sections above are listed below here:
 - Correct interface for `window()` is `window(width,height,attribs)`
 - `window()` supports `x` and `y` to set position, and `dx` and `dy` to move the window by an offset.
 - `_update` runs at 60 fps. `_update60` is not a thing in Picotron.
-- @soundsdotzip on Discord mentioned `store("screenshot.png",get_display())` to save a screenshot.
-- @_maxine_ mentioned `store("/desktop/trash.loc", {location="/ram/compost"})`
+- `soundsdotzip`'s [message](https://discord.com/channels/1068899948592107540/1068899949670056038/1357357611602805030) mentioned `store("screenshot.png",get_display())` to save a screenshot.
+- `_maxine_`'s [message](https://discord.com/channels/1068899948592107540/1218583323459453029/1357377785047552341) mentioned `store("/desktop/trash.loc", {location="/ram/compost"})`
   1. `.loc` files are shortcuts, and you can make your own.
   2. `/ram/compost` is the location used by `/system/apps/filenav.p64`'s `delete_selected_files()` function.
 - No `//` comment syntax as in Pico-8. Only `--` comments.
   - In Lua 5.4, and Picotron, `//` is the floor division operator.
 - Binary notation, `0b010101`, is supported.
+- `kutuptilkisi`'s [message](https://discord.com/channels/1068899948592107540/1358151110917099785/1358858160412037414) taught me you can override the `/system` folder permanently.
 
 ## Data dumps
 
