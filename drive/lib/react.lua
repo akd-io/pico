@@ -140,6 +140,9 @@ function __initReact()
   -- Table states can largely ignore the setState function by updating table properties directly.
   -- useState can be called with a non-function value or a setter function.
   -- Storing functions can be achieved by wrapping the function in a table, or by returning the function from a setter function.
+  ---@generic TValue
+  ---@param initialValue TValue | fun(): TValue
+  ---@return TValue, fun(newValue: TValue): void
   local function useState(initialValue)
     if DEV then assert(currentInstanceId != nil, "useState must be called inside of components") end
 
@@ -185,6 +188,10 @@ function __initReact()
     return false
   end
 
+  ---@generic TValue
+  ---@param calculateValue fun(): TValue | nil
+  ---@param dependencies array
+  ---@return TValue
   local function useMemo(calculateValue, dependencies)
     if DEV then
       assert(currentInstanceId != nil, "useMemo must be called inside of components")
