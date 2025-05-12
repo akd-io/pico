@@ -1,7 +1,6 @@
 include("/lib/describe.lua")
 include("/lib/utils.lua")
 include("/lib/react.lua")
-renderRoot, useState, createContext, useContext, useMemo = __initReact()
 include("/lib/react-motion.lua")
 useSprings, useSpring, useTransition, AnimatePresence, Motion = __initMotion()
 include("/hooks/usePrevious.lua")

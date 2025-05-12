@@ -95,7 +95,7 @@
 --[[const]]
 DEV = true
 
-function __initReact()
+do
   -- Holds the state of component instances
   local instances = {}
 
@@ -233,7 +233,7 @@ function __initReact()
   ---@generic TValue
   ---@param initialValue TValue | fun(): TValue
   ---@return TValue, fun(newValue: TValue): void
-  local function useState(initialValue)
+  function useState(initialValue)
     if DEV then assert(currentInstanceId != nil, "useState must be called inside of components") end
 
     local currentInstance = instances[currentInstanceId]
@@ -263,6 +263,7 @@ function __initReact()
 
   local function didDepsChange(prevDeps, newDeps)
     if DEV then
+      -- TODO: How do we handle nil values in the deps arrays? If users' variables in a dep array become nil, the deps array's length changes...
       assert(#prevDeps == #newDeps,
         "dependency arrays must be the same length between renders. Got lengths " ..
         #prevDeps .. " and " .. #newDeps .. ".")
@@ -282,7 +283,7 @@ function __initReact()
   ---@param calculateValue fun(): TValue | nil
   ---@param dependencies array
   ---@return TValue
-  local function useMemo(calculateValue, dependencies)
+  function useMemo(calculateValue, dependencies)
     if DEV then
       assert(currentInstanceId != nil, "useMemo must be called inside of components")
       assert(type(calculateValue) == "function", "useMemo must receive a calculateValue function")
@@ -298,16 +299,16 @@ function __initReact()
       -- If initial render OR dependencies have changed, update hook value and deps
       hooks[hookIndex] = {
         -- TODO: Possibly add type="useMemo", and assert it in subsequent renders?
-        value = calculateValue(),
+        value = calculateValue(), -- TODO: Support multiple return values using pack()?
         dependencies = dependencies
       }
     end
 
     currentInstance.hookIndex += 1
-    return hooks[hookIndex].value
+    return hooks[hookIndex].value -- TODO: Support multiple return values using unpack()?
   end
 
-  local function createContext(defaultValue)
+  function createContext(defaultValue)
     if DEV then assert(currentInstanceId == nil, "createContext must be called outside of components") end
     local context = {}
     currentContextValues[context] = defaultValue
@@ -315,12 +316,12 @@ function __initReact()
     return context
   end
 
-  local function useContext(context)
+  function useContext(context)
     if DEV then assert(currentInstanceId != nil, "useContext must be called inside of components") end
     return currentContextValues[context]
   end
 
-  local function renderRoot(externalFunctionComponent)
+  function renderRoot(externalFunctionComponent)
     internalRenderFunction("1", externalFunctionComponent)
 
     -- Clean up any unmounted component instances
@@ -333,9 +334,4 @@ function __initReact()
 
     frame += 1
   end
-
-  return renderRoot, useState, createContext, useContext, useMemo
 end
-
--- Usage:
--- local renderRoot, useState, createContext, useContext, useMemo = __initReact()

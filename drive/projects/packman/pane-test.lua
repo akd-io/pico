@@ -2,7 +2,6 @@
 include("/lib/describe.lua")
 include("/lib/utils.lua")
 include("/lib/react.lua")
-renderRoot, useState, createContext, useContext, useMemo = __initReact()
 include("/hooks/usePrevious.lua")
 include("/hooks/useMouse.lua")
 MouseProvider, useMouse = __initMouseProvider()

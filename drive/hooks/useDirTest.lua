@@ -1,5 +1,4 @@
 include("/lib/react.lua")
-renderRoot, useState, createContext, useContext, useMemo = __initReact()
 include("/hooks/useDir.lua")
 
 window({
