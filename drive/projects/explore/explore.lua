@@ -1,4 +1,3 @@
---[[pod_format="raw",created="2025-04-14 14:04:50",modified="2025-04-14 14:25:06",revision=2]]
 include("/lib/describe.lua")
 include("/lib/utils.lua")
 include("/lib/react.lua")
@@ -12,6 +11,7 @@ include("/hooks/useClickableArea.lua")
 include("/projects/deqoi/deqoi.lua")
 include("/lib/mkdirr.lua")
 include("/hooks/useDir.lua")
+include("/projects/rpc/rpc.lua")
 
 include("components/Wrap.lua")
 include("components/Label.lua")
@@ -23,11 +23,22 @@ local height = 270
 
 local ramExploreCacheDirPath = "/ram/explore-cache"
 local cartCachePodFilePath = ramExploreCacheDirPath .. "/allCartPaths.pod"
-local categoryPaths = {
-  "bbs://new",
-  "bbs://featured",
-  "bbs://wip"
+local categories = {
+  {
+    name = "Featured",
+    path = "bbs://featured"
+  },
+  {
+    name = "New",
+    path = "bbs://new"
+  },
+  {
+    name = "WIP",
+    path = "bbs://wip"
+  }
 }
+local categoryPaths = arrayMap(categories, function(category) return category.path end)
+
 local labelCachePodFilePath = ramExploreCacheDirPath .. "/labels.pod"
 
 local function StatsOverlay()
@@ -38,6 +49,26 @@ local function StatsOverlay()
     { Wrap, print, "\^o0ffFPS: " .. stat(7), 2, 2 + 30, 12 },
   }
 end
+
+local function CenteredText(text, y, col)
+  local lines = text:split("\n")
+  for line in all(lines) do
+    local textWidth = getTextWidth(line)
+    print(line, width / 2 - textWidth / 2, y, col)
+    y += 10
+  end
+end
+
+local cartMetadata = {}
+local cartMetadataRPC = createRPC({
+  funcName = "fetch_metadata",
+  event = "cartMetadataResponse",
+  onEvent = function(msg)
+    --printh("[explore fetch_metadata] Msg: " .. describe(msg))
+    cartMetadata = msg.rpc.unpackResult()
+    --printh("[explore fetch_metadata] cartMetadata:" .. describe(cartMetadata))
+  end
+})
 
 function App()
   mkdirr(ramExploreCacheDirPath)
@@ -52,26 +83,28 @@ function App()
     state.categoryIndex = ((state.categoryIndex + categoryIndexDiff - 1) % #categoryPaths) + 1
   end
 
-  local function getOffsetIndex(currentIndex, offset, length)
-    return ((currentIndex + offset - 1) % length) + 1
-  end
+  --printh("[explore] categoryPaths: " .. describe(categoryPaths))
 
   local allCartPaths = useCartPaths(categoryPaths, cartCachePodFilePath)
-  --printh("allCartPaths:")
-  --printh(describe(allCartPaths))
+  --printh("[explore] allCartPaths:" .. describe(allCartPaths))
 
   local selectedCategoryPath = categoryPaths[state.categoryIndex]
   local categoryCartPaths = allCartPaths[selectedCategoryPath]
-  --printh("categoryCartsPaths:")
-  --printh(describe(categoryCartsPaths))
+  --printh("[explore] categoryCartPaths:" .. describe(categoryCartPaths))
+
+  local function getOffsetIndex(currentIndex, offset, length)
+    return ((currentIndex + offset - 1) % length) + 1
+  end
 
   local selectedCartIndexDiff = tonum(btnp(1)) - tonum(btnp(0))
   if selectedCartIndexDiff != 0 then
     state.selectedCartIndex = getOffsetIndex(state.selectedCartIndex, selectedCartIndexDiff, #categoryCartPaths)
   end
 
-  local selectedCartPath = categoryCartPaths[state.selectedCartIndex]
+  local selectedCartPath = categoryCartPaths[state.selectedCartIndex] or false
 
+  assert(state.selectedCartIndex != nil, "state.selectedCartIndex cannot be nil") -- Or useMemo's dep array might change length
+  assert(categoryCartPaths != nil, "categoryCartPaths cannot be nil")             -- Or useMemo's dep array might change length
   local drawnCartPaths = useMemo(function()
     return {
       categoryCartPaths[getOffsetIndex(state.selectedCartIndex, -3, #categoryCartPaths)],
@@ -84,9 +117,26 @@ function App()
     }
   end, { state.selectedCartIndex, categoryCartPaths })
 
+
+  local categoryName = categories[state.categoryIndex].name
+  local cartFile = selectedCartPath and selectedCartPath:match("([^/]+)$") or false
+  local safeBBSCartPath = cartFile and "bbs://" .. cartFile or false
+  local cartFileName = cartFile and cartFile:match("(.+)%.") or false
+
+  assert(selectedCartPath != nil, "selectedCartPath cannot be nil") -- Or useMemo's dep array might change length
+  useMemo(function()
+    if (not safeBBSCartPath) then return end
+    cartMetadataRPC({ funcArgs = { safeBBSCartPath } })
+  end, { selectedCartPath })
+
+  local cartNameWithoutExtension = cartFileName and cartFileName:match("(.+)%.") or false
+
   local labels = useLabels(drawnCartPaths, labelCachePodFilePath)
 
-  cls() -- TODO: Probably don't need cls() later, when rendering on every part of the screen anyway.
+  --printh("[explore] cartMetadata: " .. describe(cartMetadata))
+
+  cls()
+
   return {
     labels[1] and { drawnCartPaths[1], Label, labels[1], 1, width, height } or false,
     labels[2] and { drawnCartPaths[2], Label, labels[2], 2, width, height } or false,
@@ -95,11 +145,25 @@ function App()
     labels[5] and { drawnCartPaths[5], Label, labels[5], 5, width, height } or false,
     labels[6] and { drawnCartPaths[6], Label, labels[6], 6, width, height } or false,
     labels[7] and { drawnCartPaths[7], Label, labels[7], 7, width, height } or false,
-    { Wrap,        clip },
+    { Wrap,         clip },
 
-    { Wrap,        print, "\^o0ffselectedCategoryPath: " .. selectedCategoryPath, 2, 2 + 40, 12 },
-    { Wrap,        print, "\^o0ffselectedCartIndex: " .. state.selectedCartIndex, 2, 2 + 50, 12 },
-    { Wrap,        print, "\^o0ffselectedCartPath: " .. tostr(selectedCartPath),  2, 2 + 60, 12 },
+    --{ Wrap,         print,                    "\^o0ffselectedCategoryPath: " .. selectedCategoryPath, 2, 2 + 40, 12 },
+    --{ Wrap,         print,                    "\^o0ffselectedCartIndex: " .. state.selectedCartIndex, 2, 2 + 50, 12 },
+    --{ Wrap,         print,                    "\^o0ffselectedCartPath: " .. tostr(selectedCartPath),  2, 2 + 60, 12 },
+
+    { CenteredText, "\^o0ff" .. categoryName, 2, 12 },
+
+    (cartMetadata and cartMetadata.icon)
+    and {
+      { Wrap, palt },
+      { Wrap, spr, cartMetadata.icon, width / 2 - cartMetadata.icon:width() / 2, height - 1 - 60 - 16 - 2 }
+    }
+    or false,
+    { CenteredText, "\^o0ff" .. (cartFileName or ""),                                   height - 1 - 60, 12 },
+    { CenteredText, "\^o0ff" .. (cartMetadata.title or cartNameWithoutExtension or ""), height - 1 - 50, 12 },
+    { CenteredText, "\^o0ff" .. (cartMetadata.version or ""),                           height - 1 - 40, 12 },
+    { CenteredText, "\^o0ff" .. (cartMetadata.author or "Anonymous"),                   height - 1 - 30, 12 },
+    { CenteredText, "\^o0ff" .. (cartMetadata.notes or ""):gsub("\n", "\n\^o0ff"),      height - 1 - 20, 12 },
 
     { StatsOverlay }
   }

@@ -59,9 +59,10 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
     add(categoryPageDirsDep, categoryPageDirs[categoryPath])
   end
 
+  --printh("[useCartPaths] #categoryPageDirsDep = " .. #categoryPageDirsDep)
   local pageDirsLoaded = useMemo(function()
-    --printh("[useCartPaths] categoryPageDirs changed!")
-    --printh("[useCartPaths] categoryPageDirs = " .. describe(categoryPageDirs))
+    --printh("[useCartPaths] categoryPageDirsDep changed!")
+    --printh("[useCartPaths] categoryPageDirsDep = " .. describe(categoryPageDirsDep))
     if not categoryDirsLoaded then return false end
     return objectEvery(categoryPaths, function(categoryPath)
       local pageDirs = categoryPageDirs[categoryPath]
@@ -70,6 +71,9 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
       end)
     end)
   end, categoryPageDirsDep) -- TODO: `categoryPageDirsDep` is an array and is not wrapped in {} on purpose. But is this a safe deps array in edge cases too? That is, is it impossible to for its length to change.
+
+  -- TODO: Add component tree logging to react to let us see what dependency array changes length between renders.
+  -- TODO: Wait, maybe some dep array gets a nil value, changing its length?
 
   local allCartPaths = useMemo(function()
     --printh("[useCartPaths] pageDirsLoaded changed!")
