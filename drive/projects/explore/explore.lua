@@ -1,6 +1,6 @@
 include("/lib/describe.lua")
 include("/lib/utils.lua")
-include("/lib/react.lua")
+include("/projects/react/react.lua")
 include("/lib/react-motion.lua")
 useSprings, useSpring, useTransition, AnimatePresence, Motion = __initMotion()
 include("/hooks/usePrevious.lua")

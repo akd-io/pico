@@ -114,6 +114,12 @@ do
     return true
   end
 
+  function createComponent(externalRenderFunction)
+    return function(...)
+      return { externalRenderFunction, ... }
+    end
+  end
+
   local internalRenderFunction
 
   local function renderElements(elements, prefix)

@@ -1,4 +1,4 @@
-include("/lib/react.lua")
+include("/projects/react/react.lua")
 include("/hooks/useDir.lua")
 
 window({
