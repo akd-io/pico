@@ -1,6 +1,96 @@
---[[pod_format="raw",created="2025-04-09 22:01:52",modified="2025-04-18 15:30:57",revision=16]]
--- See pico8 react for docs/comments.
--- This is a temporary copy until pico8 react syntax has been finialized.
+--[[
+  React.p8
+  This library tries to implement the most relevant features of the React.js library for Picotron.
+  See the original library here: https://react.dev/
+  Note that regular rules of hooks apply. Check them out here: https://react.dev/reference/rules/rules-of-hooks
+]]
+
+--[[
+  TODOs:
+  - Remove mentions of "Fragment". Upon review, we have implemented support for arrays, which is also available in React.js. Fragments are a JSX-specific construct.
+    - To emphasize this; As per https://stackoverflow.com/a/55236980, none of the pros of fragments apply to our array support:
+      > Using array notation has has some confusing differences from normal JSX:
+      > 1. Children in an array must be separated by commas.
+      > 2. Children in an array must have a key to prevent React’s key warning.
+      > 3. Strings must be wrapped in quotes.
+      To summarize,
+      1. As we have no compile step, unlike JSX, we can't do away with commas.
+      2. As we have no warnings specific to arrays, this is not an issue for the array syntax.
+      3. Back to 1; as we have no compile step, unlike JSX, we can't do away with quotes.
+  - Should we implement component wrappings for the different drawing operations?
+    - Like the HTML elements in react-dom, we could provide components like Circle, Rect, Line, Text, etc..
+    - What value would that provide though? Unless we do the next idea, and the component wrappings would provide these insets automatically.
+    - Should we provide a createLayoutComponent or something, that provides a default inset for drawing ops of child components? I have a feeling this could be made third party if useContext was supported. Maybe other hacks could make it work too.
+  - Benchmark library
+  - Consider refactoring `instances` to be a tree.
+    - This way, instance IDs won't balloon in size. Just 3 levels gives an ID of `0x1cf83f4c_1-0x1cf592cc_3-4-0x1cf591dc_3`
+    - I imagine instance ID size becoming a problem rather quickly. Imagine 100 components rendered at level 10. That's 12*100*10 = 12000 characters.
+  - Optimizations for minified production version:
+    - Turn __initComponents into an immediately invoked anonymous function expression
+    - Delete comments
+    - Delete assertions
+    - Save `local` tokens by initializing multiple variables on the same line
+]]
+
+--[[
+  One might think; Why aren't we just calling our function components directly?
+  The reason we don't call function components directly, is because that would make children render before their parents.
+  Imagine the following example:
+
+  Container(
+    Header(),
+    Body(
+      Paragraph("Hello world"),
+      Paragraph("Goodbye world")
+    )
+  )
+
+  Here, the Paragraph components would run before being passed to Body.
+  And Header and Body would run before being passed to Container.
+  This is problematic if, for example, Body is painting a background to be displays behind the Paragraphs.
+  Therefore, we use the element syntax below.
+
+  React.js/JSX:                               Function syntax:                  Element syntax:
+  <Container>                                 Container({                       { Container, {
+    <Header />                                  Header(),                         { Header },
+    <Body>                                      Body({                            { Body, {
+      <Paragraph>Hello world</Paragraph>          Paragraph("Hello world"),         { Paragraph, "Hello world" },
+      <Paragraph>Goodbye world</Paragraph>        Paragraph("Goodbye world")        { Paragraph, "Goodbye world" }
+    </Body>                                     })                                }
+  </Container>                                })                                }
+
+  It is possible to implement a developer experience like the function syntax above, where we seemingly call our function components directly.
+  But this would require us to declare function components using a `createComponent()` wrapper function.
+  The wrapper function would return simply return the element syntax hidden to the user.
+  For now, I have chosen to embrace the simplicity and token/cpu savings of the element syntax.
+]]
+
+--[[
+  JSX output example for reference:
+
+  Input:
+  <div>
+    <h1>Using Context and useReducer</h1>
+    {state}
+    {state % 2 == 0 && <Counter />}
+    {state % 2 == 1 && <Counter />}
+  </div>
+
+  Output:
+  /*#__PURE__*/_jsxs(
+    "div",
+    {
+      children: [
+        /*#__PURE__*/_jsx("h1", {
+          children: "Using Context and useReducer"
+        }),
+        state,
+        state % 2 == 0 && /*#__PURE__*/_jsx(Counter, {}),
+        state % 2 == 1 && /*#__PURE__*/_jsx(Counter, {})
+      ]
+    }
+  );
+]]
 
 --[[const]]
 DEV = true
