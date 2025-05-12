@@ -33,7 +33,7 @@ function useQuery(url)
         privateState.workerID = nil
       end
     )
-  end, {})
+  end, deps())
 
   useMemo(function()
     if (privateState.workerID != nil) then
@@ -68,7 +68,7 @@ function useQuery(url)
     state.loading = true
     privateState.workerID = create_process("useQueryWorker.lua", { argv = { url } })
     --printh("workerID: " .. tostr(privateState.workerID))
-  end, { url })
+  end, deps(url))
 
   return state
 end

@@ -2,6 +2,7 @@
 --[[
   useClickableArea handles mouse interactions with a clickable area.
 
+  TODO: Include requirements when builder handles deduplicates includes.
   REQUIREMENTS:
   - react.lua
   - useMouse.lua

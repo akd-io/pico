@@ -4,7 +4,6 @@ include("/lib/utils.lua")
 include("/projects/react/react.lua")
 include("/hooks/usePrevious.lua")
 include("/hooks/useMouse.lua")
-MouseProvider, useMouse = __initMouseProvider()
 include("/hooks/useClickableArea.lua")
 
 local min_width = 200
@@ -26,7 +25,7 @@ on_event("resize", function(msg)
   height = msg.height
 end)
 
-function CameraClip(x, y, w, h)
+CameraClip = createComponent("CameraClip", function(x, y, w, h)
   if not x or not y or not w or not h then
     camera()
     clip()
@@ -34,26 +33,26 @@ function CameraClip(x, y, w, h)
   end
   camera(-x, -y)
   clip(x, y, w, h)
-end
+end)
 
-function Camera(x, y)
+Camera = createComponent("Camera", function(x, y)
   if not x or not y then
     camera()
     return
   end
   camera(-x, -y)
-end
+end)
 
-function Clip(x, y, w, h)
+Clip = createComponent("Clip", function(x, y, w, h)
   if not x or not y or not w or not h then
     clip()
     return
   end
   clip(x, y, w, h)
-end
+end)
 
 ---@param props { text: string, x: number, y: number, color: number }
-local function Text(props)
+local Text = createComponent("Text", function(props)
   local text, x, y, color = props.text, props.x, props.y, props.color
   assert(type(text) == "string", "text must be a string, got " .. type(text))
   assert(type(x) == "number", "x must be a number, got " .. type(x))
@@ -61,10 +60,10 @@ local function Text(props)
   assert(type(color) == "number", "color must be a number, got " .. type(color))
 
   print(text, x, y, color)
-end
+end)
 
 ---@param props { x1: number, y1: number, x2: number, y2: number, color: number, children?: table }
-local function Rectfill(props)
+local Rectfill = createComponent("Rectfill", function(props)
   local x1, y1, x2, y2, color, children = props.x1, props.y1, props.x2, props.y2, props.color, props.children
   assert(type(x1) == "number", "x1 must be a number, got " .. type(x1))
   assert(type(y1) == "number", "y1 must be a number, got " .. type(y1))
@@ -74,7 +73,7 @@ local function Rectfill(props)
 
   rectfill(x1, y1, x2, y2, color)
   return { children }
-end
+end)
 
 function getCameraClip()
   local clipx1, clipy1, clipx2, clipy2 = peek2(0x5528, 4)
@@ -89,17 +88,17 @@ function setCameraClip(state)
   poke4(0x5510, state.camerax, state.cameray)
 end
 
-function Pane(x, y, width, height, color, children)
+Pane = createComponent("Pane", function(x, y, width, height, color, children)
   rectfill(x, y, x + width, y + height, color)
 
   local parentCameraClipState = getCameraClip()
 
   return {
-    { CameraClip,    x + parentCameraClipState.clipx1, y + parentCameraClipState.clipy1, width, height },
+    CameraClip(x + parentCameraClipState.clipx1, y + parentCameraClipState.clipy1, width, height),
     children,
     { setCameraClip, parentCameraClipState }
   }
-end
+end)
 
 function usePaneMouse(clip)
   local mouse = useMouse()
@@ -116,10 +115,9 @@ function usePaneMouse(clip)
   return mouse
 end
 
-function ScrollablePane(props)
+ScrollablePane = createComponent("ScrollablePane", function(props)
   local x, y, width, height, color, scrollableX, scrollableY, children = props.x, props.y, props.width, props.height,
       props.color, props.scrollableX, props.scrollableY, props.children
-
 
   local parentCameraClipState = getCameraClip()
   local clipX = x + parentCameraClipState.clipx1
@@ -140,36 +138,36 @@ function ScrollablePane(props)
   if scrollableY then state.scrollY += mouse.wheel_y end
 
   return {
-    { rectfill, x,                     y,                     x + width, y + height, color },
-    { Clip,     clipX,                 clipY,                 width,     height },
-    { Camera,   clipX + state.scrollX, clipY + state.scrollY, width,     height },
+    { rectfill,      x,                    y, x + width, y + height, color },
+    Clip(clipX, clipY, width, height),
+    Camera(clipX + state.scrollX, clipY + state.scrollY, width, height),
     children,
     { setCameraClip, parentCameraClipState }
   }
-end
+end)
 
-function App()
+App = createComponent("App", function()
   cls(7)
   return {
-    { MouseProvider, {
-      { Pane, 25, 25, 100, 100, 8, {
-        { Text, {
+    MouseProvider({
+      Pane(25, 25, 100, 100, 8, {
+        Text({
           text =
           "Hello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world",
           x = 0,
           y = 0,
           color = 1
-        } },
-        { Pane, 50, 50, 25, 25, 24, {
-          { Text, {
+        }),
+        Pane(50, 50, 25, 25, 24, {
+          Text({
             text = "ABCDEFG\nABCDEFG\nABCDEFG\nABCDEFG\nABCDEFG",
             x = 0,
             y = 0,
             color = 1
-          } }
-        } },
-      } },
-      { ScrollablePane, {
+          })
+        }),
+      }),
+      ScrollablePane({
         x = 150,
         y = 25,
         width = 100,
@@ -178,14 +176,14 @@ function App()
         scrollableY = true,
         color = 9,
         children = {
-          { Text, {
+          Text({
             text =
             "Hello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world\nHello world hello world hello world",
             x = 0,
             y = 0,
             color = 1
-          } },
-          { ScrollablePane, {
+          }),
+          ScrollablePane({
             x = 10,
             y = 10,
             width = 50,
@@ -194,19 +192,19 @@ function App()
             scrollableY = false,
             color = 10,
             children = {
-              { Text, {
+              Text({
                 text = "ABCDEFG\nABCDEFG\nABCDEFG\nABCDEFG\nABCDEFG",
                 x = 0,
                 y = 0,
                 color = 1
-              } }
+              })
             }
-          } }
+          })
         }
-      } },
-    } }
+      }),
+    })
   }
-end
+end)
 
 function _draw()
   -- TODO: Remove: If CTRL+R is pressed, restart process

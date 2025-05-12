@@ -27,7 +27,7 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
     return objectEvery(categoryDirs, function(categoryDir)
       return categoryDir.loading == false
     end)
-  end, { categoryDirs })
+  end, deps(categoryDirs))
 
   local categoryPagePaths = useMemo(function()
     --printh("[useCartPaths] categoryDirsLoaded changed!")
@@ -49,14 +49,16 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
       end
     end
     return categoryPagePaths
-  end, { categoryDirsLoaded })
+  end, deps(categoryDirsLoaded))
 
+  -- TODO: Wrap categoryPageDirs in useMemo? Why is this not done atm?
   local categoryPageDirs = {}
   local categoryPageDirsDep = {}
   for categoryPath in all(categoryPaths) do
     local pagePaths = categoryPagePaths[categoryPath]
     categoryPageDirs[categoryPath] = useDirs(pagePaths)
     add(categoryPageDirsDep, categoryPageDirs[categoryPath])
+    categoryPageDirsDep.n = (categoryPageDirsDep.n or 0) + 1
   end
 
   --printh("[useCartPaths] #categoryPageDirsDep = " .. #categoryPageDirsDep)
@@ -111,7 +113,7 @@ function useCartPaths(categoryPaths, cartCachePodFilePath)
 
     -- TODO: Return {"loading", loaded, total} instead of {category1:{},category2={},category3={}} while pending?
     return allCartPaths
-  end, { pageDirsLoaded })
+  end, deps(pageDirsLoaded))
 
   return allCartPaths
 end

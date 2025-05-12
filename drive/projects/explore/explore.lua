@@ -5,7 +5,6 @@ include("/lib/react-motion.lua")
 useSprings, useSpring, useTransition, AnimatePresence, Motion = __initMotion()
 include("/hooks/usePrevious.lua")
 include("/hooks/useMouse.lua")
-MouseProvider, useMouse = __initMouseProvider()
 include("/hooks/useClickableArea.lua")
 include("/projects/deqoi/deqoi.lua")
 include("/lib/mkdirr.lua")
@@ -40,23 +39,23 @@ local categoryPaths = arrayMap(categories, function(category) return category.pa
 
 local labelCachePodFilePath = ramExploreCacheDirPath .. "/labels.pod"
 
-local function StatsOverlay()
+local StatsOverlay = createComponent("StatsOverlay", function()
   return {
     { Wrap, print, "\^o0ffFrame: " .. frame, 2, 2,      12 },
     { Wrap, print, "\^o0ffMEM: " .. stat(0), 2, 2 + 10, 12 },
     { Wrap, print, "\^o0ffCPU: " .. stat(1), 2, 2 + 20, 12 },
     { Wrap, print, "\^o0ffFPS: " .. stat(7), 2, 2 + 30, 12 },
   }
-end
+end)
 
-local function CenteredText(text, y, col)
+local CenteredText = createComponent("CenteredText", function(text, y, col)
   local lines = text:split("\n")
   for line in all(lines) do
     local textWidth = getTextWidth(line)
     print(line, width / 2 - textWidth / 2, y, col)
     y += 10
   end
-end
+end)
 
 local cartMetadata = {}
 local cartMetadataRPC = createRPC({
@@ -69,7 +68,7 @@ local cartMetadataRPC = createRPC({
   end
 })
 
-function App()
+local App = createComponent("App", function()
   mkdirr(ramExploreCacheDirPath)
 
   local state = useState({
@@ -114,7 +113,7 @@ function App()
       categoryCartPaths[getOffsetIndex(state.selectedCartIndex, 2, #categoryCartPaths)],
       categoryCartPaths[getOffsetIndex(state.selectedCartIndex, 3, #categoryCartPaths)],
     }
-  end, { state.selectedCartIndex, categoryCartPaths })
+  end, deps(state.selectedCartIndex, categoryCartPaths))
 
 
   local categoryName = categories[state.categoryIndex].name
@@ -126,7 +125,7 @@ function App()
   useMemo(function()
     if (not safeBBSCartPath) then return end
     cartMetadataRPC({ funcArgs = { safeBBSCartPath } })
-  end, { selectedCartPath })
+  end, deps(selectedCartPath))
 
   local cartNameWithoutExtension = cartFileName and cartFileName:match("(.+)%.") or false
 
@@ -166,7 +165,7 @@ function App()
 
     { StatsOverlay }
   }
-end
+end)
 
 frame = 0
 function _draw()

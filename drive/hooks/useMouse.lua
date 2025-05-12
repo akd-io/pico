@@ -5,11 +5,11 @@
   - usePrevious.lua
 ]]
 
-__initMouseProvider = function()
+do
   local MouseContext = createContext()
 
-  local function MouseProvider(children)
-    useMemo(function() poke(0x5F2D, 0x1) end, {})
+  MouseProvider = createComponent("MouseProvider", function(children)
+    useMemo(function() poke(0x5F2D, 0x1) end, deps())
 
     local x, y, buttonBitfield, wheel_x, wheel_y = mouse()
 
@@ -18,11 +18,11 @@ __initMouseProvider = function()
 
     local leftDragStart = useMemo(
       function() return { x, y } end,
-      { leftDown }
+      deps(leftDown)
     )
     local rightDragStart = useMemo(
       function() return { x, y } end,
-      { rightDown }
+      deps(rightDown)
     )
 
     local leftHasMovedWhileDown = x != leftDragStart[1] or y != leftDragStart[2]
@@ -53,14 +53,9 @@ __initMouseProvider = function()
         children
       }
     }
-  end
+  end)
 
-  local function useMouse()
+  function useMouse()
     return useContext(MouseContext)
   end
-
-  return MouseProvider, useMouse
 end
-
--- Usage:
--- local MouseProvider, useMouse = __initMouseProvider()

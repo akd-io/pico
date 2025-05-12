@@ -96,8 +96,11 @@
 DEV = true
 
 do
+  -- Holds the display names of components
+  local displayNames = {}
+
   -- Holds the state of component instances
-  local instances = {}
+  local instances = {} -- TODO: Refactor into virtual dom tree
 
   -- Used during render
   local currentInstanceId = nil
@@ -114,16 +117,26 @@ do
     return true
   end
 
-  function createComponent(externalRenderFunction)
-    return function(...)
+  --- createComponent with takes parameters (displayName, renderFunction) or (renderFunction)
+  ---@param arg1 any If two arguments are provided, this is the displayName. If one argument is provided, this is the renderFunction.
+  ---@param arg2 any If two arguments are provided, this is the renderFunction. Otherwise nil.
+  ---@return function A function that takes arguments and returns a table with the render function and the arguments.
+  function createComponent(arg1, arg2)
+    local externalRenderFunction = arg2 and arg2 or arg1
+    local component = function(...)
       return { externalRenderFunction, ... }
     end
+    if arg2 then
+      displayNames[component] = arg1
+    end
+    return component
   end
 
   local internalRenderFunction
 
   local function renderElements(elements, prefix)
     if DEV then
+      -- TODO: Print component stack
       assert(type(elements) == "table", "Elements array was not an array. Got type " .. type(elements) .. ".")
       assert(isArray(elements),
         "Elements array was a table, but not an array. Arrays are tables with consecutive number keys. And arrays can't contain nil values. Replace nils in element arrays with false to unmount components.")
@@ -139,6 +152,7 @@ do
 
       -- TODO: Consider accepting type(element) == "function" in the case of a propless unkeyed component, or just a function to call. Enables an API to run code after render.
       if DEV then
+        -- TODO: Print component stack
         assert(type(element) == "table",
           "Element must be a table or boolean. Got type " .. type(element) .. ".")
       end
@@ -147,6 +161,7 @@ do
       local firstValueType = type(firstValue)
 
       if DEV then
+        -- TODO: Print component stack
         assert(
           firstValueType == "table" or firstValueType == "number" or firstValueType == "string" or
           firstValueType == "function" or firstValueType == "boolean",
@@ -182,6 +197,7 @@ do
 
         local renderFuncType = type(externalFunctionComponent)
         if DEV then
+          -- TODO: Print component stack
           assert(renderFuncType == "function",
             "Elements must be tables with a function as the first element. Got type " .. renderFuncType .. ".")
         end
@@ -195,8 +211,11 @@ do
   end
 
   internalRenderFunction = function(key, externalFunctionComponent, ...)
-    if DEV then assert(key != nil, "key must be provided") end
-    -- TODO: assert key is string/number?
+    if DEV then
+      -- TODO: Print component stack
+      assert(key != nil, "key must be provided")
+      -- TODO: assert key can be stringified?
+    end
 
     -- Save parent/previous component instance and id
     local parentInstanceId = currentInstanceId
@@ -205,12 +224,15 @@ do
     -- We use tostring(func) to add the address of the external render function to the instance id.
     -- This is important to support conditionals like `condition and { ComponentA } or { ComponentB }`
     local prefix = parentInstanceId and parentInstanceId .. "-" or ""
-    local instanceId = prefix .. sub(tostring(externalFunctionComponent), 13) .. "_" .. key
+    local instanceId = prefix ..
+        sub(tostring(externalFunctionComponent), 13) ..
+        "_" .. key -- TODO: Should we use tostring(key) here or what?
 
     -- printh("Rendering " .. instanceId)
 
     -- Initialize component state if missing (initial render)
     if not instances[instanceId] then
+      -- TODO: Refactor into virtual dom tree
       instances[instanceId] = { hooks = {} }
     end
 
@@ -240,7 +262,10 @@ do
   ---@param initialValue TValue | fun(): TValue
   ---@return TValue, fun(newValue: TValue): void
   function useState(initialValue)
-    if DEV then assert(currentInstanceId != nil, "useState must be called inside of components") end
+    if DEV then
+      -- TODO: Print component stack
+      assert(currentInstanceId != nil, "useState must be called inside of components")
+    end
 
     local currentInstance = instances[currentInstanceId]
     local hooks = currentInstance.hooks
@@ -267,17 +292,20 @@ do
     return hooks[hookIndex].value, setState
   end
 
+  ---deps() is used to specify dependencies for `useMemo`.
+  deps = pack
+
   local function didDepsChange(prevDeps, newDeps)
     if DEV then
-      -- TODO: How do we handle nil values in the deps arrays? If users' variables in a dep array become nil, the deps array's length changes...
-      assert(#prevDeps == #newDeps,
+      -- TODO: Print component stack
+      assert(prevDeps.n == newDeps.n,
         "dependency arrays must be the same length between renders. Got lengths " ..
-        #prevDeps .. " and " .. #newDeps .. ".")
+        prevDeps.n .. " and " .. newDeps.n .. ".")
     end
-    if (#newDeps == 0) then
+    if (newDeps.n == 0) then
       return false
     end
-    for i = 1, #newDeps do
+    for i = 1, newDeps.n do
       if (prevDeps[i] != newDeps[i]) then
         return true
       end
@@ -291,9 +319,12 @@ do
   ---@return TValue
   function useMemo(calculateValue, dependencies)
     if DEV then
+      -- TODO: Print component stack
       assert(currentInstanceId != nil, "useMemo must be called inside of components")
       assert(type(calculateValue) == "function", "useMemo must receive a calculateValue function")
       assert(type(dependencies) == "table", "useMemo must receive a dependency array")
+      assert(dependencies.n != nil,
+        "dependency array passed to useMemo must be created with `deps()`, eg. `useMemo(fn, deps(dep1, dep2, dep3))` or `useMemo(fn, deps())`")
     end
 
     local currentInstance = instances[currentInstanceId]
@@ -315,7 +346,10 @@ do
   end
 
   function createContext(defaultValue)
-    if DEV then assert(currentInstanceId == nil, "createContext must be called outside of components") end
+    if DEV then
+      -- TODO: Print component stack
+      assert(currentInstanceId == nil, "createContext must be called outside of components")
+    end
     local context = {}
     currentContextValues[context] = defaultValue
     context.Provider = { type = "provider", context = context }
@@ -323,7 +357,10 @@ do
   end
 
   function useContext(context)
-    if DEV then assert(currentInstanceId != nil, "useContext must be called inside of components") end
+    if DEV then
+      -- TODO: Print component stack
+      assert(currentInstanceId != nil, "useContext must be called inside of components")
+    end
     return currentContextValues[context]
   end
 

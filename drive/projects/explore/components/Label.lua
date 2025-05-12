@@ -1,5 +1,5 @@
 --[[pod_format="raw",created="2025-04-18 23:14:10",modified="2025-04-18 23:18:49",revision=13]]
-function Label(labelUserdata, index, width, height)
+Label = createComponent("Label", function(labelUserdata, index, width, height)
   local xTargets = {
     0,
     0,
@@ -27,4 +27,4 @@ function Label(labelUserdata, index, width, height)
   palt(0)                     -- Treat all colors as opaque.
   clip(x1 + halfPixelOffset, 0, x2 + halfPixelOffset, height)
   spr(labelUserdata, spriteOffsetX + halfPixelOffset, 0)
-end
+end)

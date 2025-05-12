@@ -7,7 +7,7 @@ window({
 })
 
 local f = 0
-function App()
+App = createComponent("App", function()
   f += 1
 
   local paths = useState({
@@ -32,7 +32,7 @@ function App()
     local dir = dirs[path]
     print(path .. ": " .. (dir.loading and "loading" or tostr(#dir.result)))
   end
-end
+end)
 
 function _draw()
   renderRoot(App)

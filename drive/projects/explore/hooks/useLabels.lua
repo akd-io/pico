@@ -24,12 +24,12 @@ function useLabels(cartPaths, labelCachePodFilePath)
       add(labels, memLabelCache[cartPath])
     end
     return labels
-  end, { cartPaths })
+  end, deps(cartPaths))
 
   useMemo(function()
     -- On initial render, store cache
     store(labelCachePodFilePath, memLabelCache)
-  end, {})
+  end, deps())
 
   return labels
 end

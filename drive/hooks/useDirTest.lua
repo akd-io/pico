@@ -7,7 +7,7 @@ window({
 })
 
 local f = 0
-function App()
+App = createComponent("App", function()
   f += 1
 
   local state = useState({
@@ -28,7 +28,7 @@ function App()
   print("path: " .. tostr(state.path))
   print("result: " .. tostr(dir.result))
   print("loading: " .. tostr(dir.loading))
-end
+end)
 
 function _draw()
   renderRoot(App)

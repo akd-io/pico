@@ -40,7 +40,7 @@ function useDirs(paths)
       workerIDs[path] = create_process("/hooks/useDirWorker.lua", { argv = { path, hookInstanceId } })
       --printh("[useDir] Spawned worker: " .. tostr(workerIDs[path]))
     end
-  end, { paths })
+  end, deps(paths))
 
   useMemo(function()
     --printh("[useDir] Initial render: Setting up on_event.")
@@ -72,7 +72,7 @@ function useDirs(paths)
         workerIDs[path] = nil
       end
     )
-  end, {})
+  end, deps())
 
   return states
 end
@@ -80,7 +80,7 @@ end
 function useDir(path)
   local stabilePaths = useMemo(function()
     return { path }
-  end, { path })
+  end, deps(path))
 
   return useDirs(stabilePaths)[path]
 end
