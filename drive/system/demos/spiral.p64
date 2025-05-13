@@ -1,0 +1,28 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: _meta/
+:: _meta/workspaces.pod
+b64$LS0gcGljb3Ryb24gb2JqZWN0IGRhdGEKe3t3b3Jrc3BhY2VfaW5kZXg9MSxjcHJval9maWxl
+PSJtYWluLmx1YSJ9fQ==
+:: _meta/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA1LTA0IDEyOjA0OjUwIixtb2RpZmllZD0iMjAyNS0w
+NS0xMyAxMTo0ODoxNSJdXQ==
+:: main.lua
+-- spiral
+-- by zep
+function _draw()
+	cls()
+	for i=1,150,2 do
+		local sx = 240 + cos(-t()/2+i/30)*9
+		local sy = 135 + sin(-t()/2+i/30)*9
+		local r=2+i*3
+		
+		circ(sx, sy, r, 12)
+	end
+	print(string.format("%.5f",stat(1)),2,2,7)
+end
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA1LTA0IDEyOjA0OjUwIixtb2RpZmllZD0iMjAyNS0w
+NS0xMyAxMTo0ODoxNSJdXQ==
+:: [eoc]
