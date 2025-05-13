@@ -165,6 +165,8 @@ on_event("report_error", function(msg)
 
 	if (type(msg.content) == "string") then
 
+		printh(msg.content)
+
 		-- don't reset immediately after last error (want to see the first error. e.g syntax error causes runtime error)
 		if (sub(msg.content,1,1) == "*" and time() > last_reported_error_t + 1) then
 			logdat = {}
