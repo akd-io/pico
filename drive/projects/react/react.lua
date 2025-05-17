@@ -1,5 +1,5 @@
 --[[
-  React.p8
+  React.p64
   This library tries to implement the most relevant features of the React.js library for Picotron.
   See the original library here: https://react.dev/
   Note that regular rules of hooks apply. Check them out here: https://react.dev/reference/rules/rules-of-hooks
