@@ -1,4 +1,4 @@
--- picotron -x test-nil-arrays.lua
+-- picotron -x lua-scripts/test-nil-arrays.lua
 
 print("#{ 1, nil, nil }")
 --print(#{ 1, 2, 3 })     -- 3
@@ -60,3 +60,19 @@ end
 --func(1, 2, 3)     -- 3
 --func(1, nil, 3)   -- 3
 func(1, nil, nil) -- 3
+
+print("")
+print("for k, v in ipairs(table.pack(1, nil, nil)) do print(k, v) end")
+for k, v in ipairs(table.pack(1, nil, nil)) do print(k, v) end -- 1
+
+print("")
+print("local packed = pack(1, nil, nil)")
+local packed = table.pack(1, nil, nil)
+print("for i = 1, packed.n do print(packed[i]) end")
+for i = 1, packed.n do print(packed[i]) end -- 1 \n nil \n nil
+
+print("")
+print("local packed = pack(1, nil, nil)")
+local packed = table.pack(1, nil, nil)
+print("for v in all(packed) do print(v) end")
+for v in all(packed) do print(v) end -- 1
