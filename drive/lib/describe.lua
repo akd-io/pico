@@ -1,4 +1,3 @@
---[[pod_format="raw",created="2025-03-31 19:08:43",modified="2025-03-31 19:10:22",revision=2]]
 local function isArray(table)
   if (type(table) != "table") then return false end
   local i = 1
@@ -15,7 +14,9 @@ local function sortedArray(array)
   local sorted = {}
   for d in all(array) do
     local i = 1
-    while (sorted[i] and sorted[i] < d) do
+    -- Was: while (sorted[i] and sorted[i] < d)) do
+    while (sorted[i] and (type(d) == "string" or sorted[i] < d)) do
+      -- TODO: This is a temp solution to fix a string-number comparison. Properly handle comparisons between numbers and strings.
       i += 1
     end
     add(sorted, d, i)
