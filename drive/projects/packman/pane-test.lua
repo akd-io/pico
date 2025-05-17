@@ -25,7 +25,7 @@ on_event("resize", function(msg)
   height = msg.height
 end)
 
-CameraClip = createComponent("CameraClip", function(x, y, w, h)
+CameraClip = component("CameraClip", function(x, y, w, h)
   if not x or not y or not w or not h then
     camera()
     clip()
@@ -35,7 +35,7 @@ CameraClip = createComponent("CameraClip", function(x, y, w, h)
   clip(x, y, w, h)
 end)
 
-Camera = createComponent("Camera", function(x, y)
+Camera = component("Camera", function(x, y)
   if not x or not y then
     camera()
     return
@@ -43,7 +43,7 @@ Camera = createComponent("Camera", function(x, y)
   camera(-x, -y)
 end)
 
-Clip = createComponent("Clip", function(x, y, w, h)
+Clip = component("Clip", function(x, y, w, h)
   if not x or not y or not w or not h then
     clip()
     return
@@ -52,7 +52,7 @@ Clip = createComponent("Clip", function(x, y, w, h)
 end)
 
 ---@param props { text: string, x: number, y: number, color: number }
-local Text = createComponent("Text", function(props)
+local Text = component("Text", function(props)
   local text, x, y, color = props.text, props.x, props.y, props.color
   assert(type(text) == "string", "text must be a string, got " .. type(text))
   assert(type(x) == "number", "x must be a number, got " .. type(x))
@@ -63,7 +63,7 @@ local Text = createComponent("Text", function(props)
 end)
 
 ---@param props { x1: number, y1: number, x2: number, y2: number, color: number, children?: table }
-local Rectfill = createComponent("Rectfill", function(props)
+local Rectfill = component("Rectfill", function(props)
   local x1, y1, x2, y2, color, children = props.x1, props.y1, props.x2, props.y2, props.color, props.children
   assert(type(x1) == "number", "x1 must be a number, got " .. type(x1))
   assert(type(y1) == "number", "y1 must be a number, got " .. type(y1))
@@ -88,7 +88,7 @@ function setCameraClip(state)
   poke4(0x5510, state.camerax, state.cameray)
 end
 
-Pane = createComponent("Pane", function(x, y, width, height, color, children)
+Pane = component("Pane", function(x, y, width, height, color, children)
   rectfill(x, y, x + width, y + height, color)
 
   local parentCameraClipState = getCameraClip()
@@ -115,7 +115,7 @@ function usePaneMouse(clip)
   return mouse
 end
 
-ScrollablePane = createComponent("ScrollablePane", function(props)
+ScrollablePane = component("ScrollablePane", function(props)
   local x, y, width, height, color, scrollableX, scrollableY, children = props.x, props.y, props.width, props.height,
       props.color, props.scrollableX, props.scrollableY, props.children
 
@@ -146,7 +146,7 @@ ScrollablePane = createComponent("ScrollablePane", function(props)
   }
 end)
 
-local App = createComponent("App", function()
+local App = component("App", function()
   cls(7)
   return {
     MouseProvider({

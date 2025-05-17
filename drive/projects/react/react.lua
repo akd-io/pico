@@ -23,7 +23,7 @@
 ]]
 
 --[[
-  --TODO: Merge this with later section on the same topic. It's called "Why `createComponent`? React.js doesn't use `createComponent`?"
+  --TODO: Merge this with later section on the same topic. It's called "Why `component`? React.js doesn't use `component`?"
   You might think; Why aren't we just calling our function components directly?
   The reason we don't call function components directly, is because that would make children render before their parents.
   Imagine the following example:
@@ -51,7 +51,7 @@
   </Container>                                })                                }
 
   It is possible to implement a developer experience like the function syntax above, where we seemingly call our function components directly.
-  But this would require us to declare function components using a `createComponent()` wrapper function.
+  But this would require us to declare function components using a `component()` wrapper function.
   The wrapper function would return simply return the element syntax hidden to the user.
   For now, I have chosen to embrace the simplicity and token/cpu savings of the element syntax.
 ]]
@@ -114,9 +114,9 @@ local function isArrayLike(table)
   return true
 end
 
---- # `createComponent`
+--- # `component`
 ---
---- `createComponent` creates a React component from a displayName and a render function.
+--- `component` creates a React component from a displayName and a render function.
 ---
 --- The displayName is used for improved error reporting during development.
 ---
@@ -127,7 +127,7 @@ end
 --- ### Hello world
 ---
 --- ```lua
---- local HelloWorld = createComponent("HelloWorld", function()
+--- local HelloWorld = component("HelloWorld", function()
 ---   print("Hello world!")
 --- end)
 --- ```
@@ -135,11 +135,11 @@ end
 --- ### `Counter` example with some best practices
 ---
 --- ```lua
---- local Print = createComponent("Print", function(text)
+--- local Print = component("Print", function(text)
 ---   print(text) -- ✅ Run draw operations at the top level of the render function.
 --- end)
 ---
---- local Counter = createComponent("Counter", function(initialCount)
+--- local Counter = component("Counter", function(initialCount)
 ---   local count, setCount = useState(initialCount) -- ✅ Handle state with `useState`
 ---
 ---   if (keyp(0)) then
@@ -161,7 +161,7 @@ end
 ---   )
 --- end)
 ---
---- local App = createComponent("App", function()
+--- local App = component("App", function()
 ---   cls()            -- ✅ Run draw operations at the top level of the render function.
 ---
 ---   return Fragment( -- ✅ Return components to build a component tree
@@ -174,7 +174,7 @@ end
 --- end
 --- ```
 ---
---- ## Why `createComponent`? React.js doesn't use `createComponent`?
+--- ## Why `component`? React.js doesn't use `component`?
 ---
 --- TODO: Copy to docs, and replace with link.
 ---
@@ -183,16 +183,16 @@ end
 --- Now you might be thinking, sure but why not just define components using render functions, as in React.js, and then just call them in our rendering logic?
 ---
 --- The problem with that approach is that child components will render before parent components, which is not the desired behavior.
---- `createComponent` instead returns an element builder function that looks much like the JSX code generated using React.js.
+--- `component` instead returns an element builder function that looks much like the JSX code generated using React.js.
 ---
 --- In react.js, imagine the following JSX, `<Counter initialCount={0} />`. JSX is not JavaScript, and will throw a syntax error at runtime.
 --- For this reason, a compiler will turn it into the JavaScript code `_jsx(Counter, { initialCount: 0 })`. Essentially, the `_jsx` function turns the component reference and props into a React element.
 ---
---- Similarly, the Lua code `local Counter = createComponent(...)`, makes `Counter({ initialCount = 0 })` equivalent to the `_jsx(Counter, { initialCount: 0 })`.
+--- Similarly, the Lua code `local Counter = component(...)`, makes `Counter({ initialCount = 0 })` equivalent to the `_jsx(Counter, { initialCount: 0 })`.
 --- That is, `Counter` becomes the element builder function for the Counter component.
 ---
 --- All in all, we must turn render functions into elements *somehow*, to preserve rendering order.
---- `createComponent` is relatively ergonomic, and has the added benefit of letting us set `displayName` easily.
+--- `component` is relatively ergonomic, and has the added benefit of letting us set `displayName` easily.
 ---
 --- ## Display names
 ---
@@ -202,17 +202,17 @@ end
 ---
 --- In Lua, we can't introspect functions to retrieve their names, and functions aren't objects, so we can't set properties on them.
 ---
---- Luckily, `createComponent` actually returns a table that just happens to be callable thanks to the `__call` metamethod. So the `displayName` *can* be set with `MyComponent.displayName = "MyComponent"`.
+--- Luckily, `component` actually returns a table that just happens to be callable thanks to the `__call` metamethod. So the `displayName` *can* be set with `MyComponent.displayName = "MyComponent"`.
 ---
 --- But in the end, forcing users to set a `displayName`, by making it the first function argument, seems like the best solution, to ensure users get nice stack traces.
 ---
---- `createComponent` will allow a `nil` `displayName` however. So in theory you can override `createComponent` with a `createComponent(renderFunction)` function that forwards to `createComponent(nil, renderFunction)`.
+--- `component` will allow a `nil` `displayName` however. So in theory you can override `component` with a `component(renderFunction)` function that forwards to `component(nil, renderFunction)`.
 ---
 --- @param displayName string The display name of the component. Often the same as the component variable's name.
 --- @param renderFunction function The render function of the component.
 --- @return function # The function component
-local function createComponent(displayName, renderFunction)
-  -- TODO: Rename `createComponent` to simply `component`
+local function component(displayName, renderFunction)
+  -- TODO: Rename `component` to simply `component`
   if DEV then
     assert(displayName == nil or type(displayName) == "string", "displayName must be a string or nil.")
     assert(type(renderFunction) == "function", "renderFunction must be a function.")
@@ -407,7 +407,7 @@ end
 --- For example, you could use `useState` to store a frame count, incremented every frame:
 ---
 --- ```lua
---- local FrameComponent = createComponent("FrameComponent", function()
+--- local FrameComponent = component("FrameComponent", function()
 ---   local frame, setFrame = useState(0)
 ---   frame += 1          -- ❌ Don't update state variables directly.
 ---                       --    This will update the `frame` variable,
@@ -422,7 +422,7 @@ end
 --- If you need the frame variable to include the updated state after updating it, for example to print it, you should update it too:
 ---
 --- ```lua
---- local FrameComponent = createComponent("FrameComponent", function()
+--- local FrameComponent = component("FrameComponent", function()
 ---   local frame, setFrame = useState(0)
 ---   frame = setFrame(frame + 1) -- ✅ Do update state variable with setters.
 --- --^^^^^^^                     --    This will update the `frame` variable,
@@ -440,7 +440,7 @@ end
 ---
 --- For example:
 --- ```lua
---- local FrameComponent = createComponent("FrameComponent", function()
+--- local FrameComponent = component("FrameComponent", function()
 ---   local state, setState = useState({ frame = 0 })
 ---   state.frame += 1 -- ✅ Do: Modify table state properties directly,
 ---                              instead of using `setState`.
@@ -521,7 +521,7 @@ end
 ---
 --- Assume we have a `Text` component defined elsewhere, and notice how returning an array containing `nil` breaks the expected behavior:
 --- ```lua
---- local MyComponent = createComponent("MyComponent", function()
+--- local MyComponent = component("MyComponent", function()
 ---   local shouldRenderText = rnd(1) > 0.5
 ---   return {           -- ❌ Don't return arrays containing `nil`.
 ---                      --    It will cut short the array.
@@ -538,7 +538,7 @@ end
 ---
 --- Using `Fragment` instead, we can return `nil` values in the array:
 --- ```lua
---- local MyComponent = createComponent("MyComponent", function()
+--- local MyComponent = component("MyComponent", function()
 ---   local shouldRenderText = rnd(1) > 0.5
 ---   return Fragment(   -- ✅ Use `Fragment` to return arrays containing `nil`.
 ---     Text("Hello!"),
@@ -599,11 +599,11 @@ local deps = pack
 --- like `Array.prototype.map` in JavaScript.
 ---
 --- ```lua
---- local ListItem = createComponent("ListItem", function (text)
+--- local ListItem = component("ListItem", function (text)
 ---   print(text)
 --- end
 ---
---- local List = createComponent("List", function (items)
+--- local List = component("List", function (items)
 ---   return arrayMap(items, function(item)
 ---     return keyed(item.id, ListItem(item.text)) -- ✅ Do use `keyed(key, component)` components in dynamic lists
 ---   end)
@@ -699,12 +699,12 @@ end
 --- ```lua
 --- local MyContext = createContext("default value")
 ---
---- local MyComponent = createComponent("MyComponent", function()
+--- local MyComponent = component("MyComponent", function()
 ---   local value = use(MyContext)
 ---   print(value)
 --- end)
 ---
---- local App = createComponent("App", function()
+--- local App = component("App", function()
 ---   return Fragment(
 ---     MyContext.Provider({ value = "hello world" }, MyComponent())
 ---   )
@@ -763,7 +763,7 @@ end
 ---
 --- For example:
 --- ```lua
---- local App = createComponent("App", function()
+--- local App = component("App", function()
 ---   print("Hello from App component!")
 --- end)
 ---
@@ -815,7 +815,7 @@ local function renderRoot(componentOrElement)
 end
 
 local React = {
-  createComponent = createComponent,
+  component = component,
   renderRoot = renderRoot,
   useState = useState,
   useMemo = useMemo,

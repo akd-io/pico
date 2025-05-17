@@ -3,7 +3,7 @@ include("/hooks/usePrevious.lua")
 include("/hooks/useMouse.lua")
 include("/hooks/useClickableArea.lua")
 
-CameraClip = createComponent("CameraClip", function(x, y, w, h)
+CameraClip = component("CameraClip", function(x, y, w, h)
   if not x or not y or not w or not h then
     camera()
     clip()
@@ -13,7 +13,7 @@ CameraClip = createComponent("CameraClip", function(x, y, w, h)
   clip(x, y, w, h)
 end)
 
-Camera = createComponent("Camera", function(x, y)
+Camera = component("Camera", function(x, y)
   if not x or not y then
     camera()
     return
@@ -21,7 +21,7 @@ Camera = createComponent("Camera", function(x, y)
   camera(-x, -y)
 end)
 
-Clip = createComponent("Clip", function(x, y, w, h)
+Clip = component("Clip", function(x, y, w, h)
   if not x or not y or not w or not h then
     clip()
     return
@@ -30,7 +30,7 @@ Clip = createComponent("Clip", function(x, y, w, h)
 end)
 
 ---@param props { text: string, x: number, y: number, color: number }
-local Text = createComponent("Text", function(props)
+local Text = component("Text", function(props)
   local text, x, y, color = props.text, props.x, props.y, props.color
   assert(type(text) == "string", "text must be a string, got " .. type(text))
   assert(type(x) == "number", "x must be a number, got " .. type(x))
@@ -41,7 +41,7 @@ local Text = createComponent("Text", function(props)
 end)
 
 ---@param props { x1: number, y1: number, x2: number, y2: number, color: number, children?: table }
-local Rectfill = createComponent("Rectfill", function(props)
+local Rectfill = component("Rectfill", function(props)
   local x1, y1, x2, y2, color, children = props.x1, props.y1, props.x2, props.y2, props.color, props.children
   assert(type(x1) == "number", "x1 must be a number, got " .. type(x1))
   assert(type(y1) == "number", "y1 must be a number, got " .. type(y1))
@@ -56,7 +56,7 @@ end)
 local buttonXPadding = 4
 
 ---@param props { text: string, x1: number, y1: number, x2: number, y2: number, bgColor: number, onClick: function }
-local Button = createComponent("Button", function(props)
+local Button = component("Button", function(props)
   local text, x1, y1, x2, y2, bgColor = props.text, props.x1, props.y1, props.x2, props.y2, props.bgColor
   assert(type(text) == "string", "text must be a string, got " .. type(text))
   assert(type(x1) == "number", "x1 must be a number, got " .. type(x1))
@@ -93,7 +93,7 @@ local Button = createComponent("Button", function(props)
 end)
 
 ---@param props { x:number, y:number, width:number, tabs: { name: string, children: children }[] }
-local Tabs = createComponent("Tabs", function(props)
+local Tabs = component("Tabs", function(props)
   local x, y, tabs, width = props.x, props.y, props.tabs, props.width
   assert(type(x) == "number", "x must be a number, got " .. type(x))
   assert(type(y) == "number", "y must be a number, got " .. type(y))
@@ -217,7 +217,7 @@ local function useCategoryCarts(categoryUrl)
   )
 end
 
-ScrollView = createComponent("ScrollView", function(props)
+ScrollView = component("ScrollView", function(props)
   local x, y, width, height, children = props.x, props.y, props.width, props.height, props.children
 
   local mouse = useMouse()
@@ -237,7 +237,7 @@ ScrollView = createComponent("ScrollView", function(props)
 end)
 
 ---@param props { carts: string[], x: number, y: number, width: number, height: number }
-CartList = createComponent("CartList", function(props)
+CartList = component("CartList", function(props)
   local carts, x, y, width, height = props.carts, props.x, props.y, props.width, props.height
   return {
     ScrollView({
@@ -260,7 +260,7 @@ CartList = createComponent("CartList", function(props)
   }
 end)
 
-local Pane = createComponent("Pane", function(x, y, width, height, color, children)
+local Pane = component("Pane", function(x, y, width, height, color, children)
   rectfill(x, y, x + width, y + height, color)
   return {
     Camera(x, y),
@@ -269,7 +269,7 @@ local Pane = createComponent("Pane", function(x, y, width, height, color, childr
   }
 end)
 
-local App = createComponent("App", function()
+local App = component("App", function()
   cls(7)
 
   local new = useCategoryCarts("bbs://new")

@@ -73,7 +73,7 @@ As described in the [Element syntax section](#211-element-syntax), the Function 
 
 It will likely look cleaner and more readable to some users. And might even be familiar to devs using frameworks like Flutter. Apart from the performance overhead, it does however also add an extra layer of magic, and I'm not sure this is worth it.
 
-The layer of magic stems from components using the Function syntax needing to be wrapped in a `createComponent(renderFunc)` function. The `createComponent` function return a function that converts the Function syntax to Element syntax, with the `renderFunc` simply passed on to the element.
+The layer of magic stems from components using the Function syntax needing to be wrapped in a `component(renderFunc)` function. The `component` function return a function that converts the Function syntax to Element syntax, with the `renderFunc` simply passed on to the element.
 
 One thing it does help with however, is more clearly separate surrounding array curly braces from the elements.
 

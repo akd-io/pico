@@ -60,7 +60,7 @@
   </Container>                                })                                }
 
   It is possible to implement a developer experience like the function syntax above, where we seemingly call our function components directly.
-  But this would require us to declare function components using a `createComponent()` wrapper function.
+  But this would require us to declare function components using a `component()` wrapper function.
   The wrapper function would return simply return the element syntax hidden to the user.
   For now, I have chosen to embrace the simplicity and token/cpu savings of the element syntax.
 ]]

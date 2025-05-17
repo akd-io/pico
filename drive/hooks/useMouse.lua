@@ -8,7 +8,7 @@
 do
   local MouseContext = createContext()
 
-  MouseProvider = createComponent("MouseProvider", function(children)
+  MouseProvider = component("MouseProvider", function(children)
     useMemo(function() poke(0x5F2D, 0x1) end, deps())
 
     local x, y, buttonBitfield, wheel_x, wheel_y = mouse()

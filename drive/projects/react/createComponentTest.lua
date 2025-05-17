@@ -7,7 +7,7 @@ local renderFunction = function(a, b)
   renderFunctionRan = true
 end
 
-local Component = createComponent("MyComponent", renderFunction)
+local Component = component("MyComponent", renderFunction)
 
 local element = Component(1, 2)
 

@@ -7,7 +7,7 @@ window({
 })
 
 local f = 0
-local App = createComponent("App", function()
+local App = component("App", function()
   f += 1
 
   local state = useState({

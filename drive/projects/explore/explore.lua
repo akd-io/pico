@@ -39,7 +39,7 @@ local categoryPaths = arrayMap(categories, function(category) return category.pa
 
 local labelCachePodFilePath = ramExploreCacheDirPath .. "/labels.pod"
 
-local StatsOverlay = createComponent("StatsOverlay", function()
+local StatsOverlay = component("StatsOverlay", function()
   return {
     Wrap(print, "\^o0ffFrame: " .. frame, 2, 2, 12),
     Wrap(print, "\^o0ffMEM: " .. stat(0), 2, 2 + 10, 12),
@@ -48,7 +48,7 @@ local StatsOverlay = createComponent("StatsOverlay", function()
   }
 end)
 
-local CenteredText = createComponent("CenteredText", function(text, y, col)
+local CenteredText = component("CenteredText", function(text, y, col)
   local lines = text:split("\n")
   for line in all(lines) do
     local textWidth = getTextWidth(line)
@@ -68,7 +68,7 @@ local cartMetadataRPC = createRPC({
   end
 })
 
-local App = createComponent("App", function()
+local App = component("App", function()
   mkdirr(ramExploreCacheDirPath)
 
   local state = useState({

@@ -1,5 +1,5 @@
 --[[pod_format="raw",created="2025-04-18 23:14:10",modified="2025-04-18 23:18:49",revision=13]]
-Label = createComponent("Label", function(labelUserdata, index, width, height)
+Label = component("Label", function(labelUserdata, index, width, height)
   local xTargets = {
     0,
     0,
