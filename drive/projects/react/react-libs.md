@@ -1,8 +1,5 @@
 Potential other libs for React:
 
-- Update/draw separation?
-  - useDraw() hook only runs callback during \_draw().
-  - useUpdate() hook only runs callback during \_update().
 - React Form
   - useForm() hook
   - default values
