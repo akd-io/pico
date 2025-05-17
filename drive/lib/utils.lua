@@ -1,5 +1,18 @@
 -- TODO: Consider using iterator patterns instead for some of these? For example, why isn't range() an iterator?
 
+--- `destructure()` takes a table and a variable number of keys, and returns a list of the values of those keys.
+--- If a key is not found in the table, `nil` is returned for that key.
+--- @param tbl table
+--- @param ... any
+--- @return any
+function destructure(tbl, ...)
+  local values = {}
+  for key in all(arg) do
+    add(values, tbl[key])
+  end
+  return unpack(values)
+end
+
 function getTextWidth(text)
   return print(text, 0, 1000)
 end
