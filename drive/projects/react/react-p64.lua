@@ -13,6 +13,20 @@
       - Insets can be done third-party though, evident from the `Pane` and `ScrollablePane` components I've experimented with i #explore.
     - They would be a bit nicer to use than `Wrap(func, ...args)` is atm.
     - Would be a nice way to teach clients not to call arbitrary function in the component return element syntax.
+    - See if it's possible to predict if the current frame (main loop iteration)
+      will include a `_draw()` call (is a drawing frame).
+      The main loop in `foot.lua` seems to use:
+      ```lua
+      _update()
+      local fps = stat(7)
+      if (fps < 60) __process_event_messages() _update()
+      if (fps < 30) __process_event_messages() _update()
+      ```
+      Can we also use `stat(7)` to predict if `_draw()` will be called?
+      If so, we can override all draw function with no-operations if `_draw()` will not be called.
+      This way we can save some CPU cycles.
+    - We should also surface a `willDraw()` function or `useDraw(function)`
+      hook to further encapsulate draw logic.
   - Benchmark library
   - Consider refactoring `instances` to be a tree to prevent instance ids from ballooning in size using up memory.
   - Enhance error handling.
@@ -171,7 +185,7 @@ end
 --- end)
 ---
 --- function _draw()
----   renderRoot(App())
+---   renderRoot(App)
 --- end
 --- ```
 ---
@@ -775,23 +789,6 @@ end
 ---
 --- @param componentOrElement function|table The root component or component element to render.
 local function renderRoot(componentOrElement)
-  --[[
-    TODO: See if it's possible to predict if the current frame (main loop iteration)
-          will include a `_draw()` call (is a drawing frame).
-          The main loop in `foot.lua` seems to use:
-          ```lua
-          _update()
-          local fps = stat(7)
-          if (fps < 60) __process_event_messages() _update()
-          if (fps < 30) __process_event_messages() _update()
-          ```
-          Can we also use `stat(7)` to predict if `_draw()` will be called?
-          If so, we can override all draw function with no-operations if `_draw()` will not be called.
-          This way we can save some CPU cycles.
-    TODO: We should also surface a `willDraw()` function or `useDraw(function)`
-          hook to further encapsulate draw logic.
-  ]]
-
   assert(
     componentOrElement.type == COMPONENT_TYPE or
     componentOrElement.type == COMPONENT_ELEMENT_TYPE,

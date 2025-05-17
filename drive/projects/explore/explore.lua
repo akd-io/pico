@@ -1,6 +1,6 @@
 include("/lib/describe.lua")
 include("/lib/utils.lua")
-include("/projects/react/react.lua")()
+include("/projects/react/react-p64.lua")()
 include("/lib/react-motion.lua")
 useSprings, useSpring, useTransition, AnimatePresence, Motion = __initMotion()
 include("/hooks/usePrevious.lua")
@@ -166,5 +166,5 @@ end)
 frame = 0
 function _draw()
   frame += 1
-  renderRoot(App())
+  renderRoot(App)
 end

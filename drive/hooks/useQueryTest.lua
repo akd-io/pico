@@ -1,4 +1,4 @@
-include("/projects/react/react.lua")()
+include("/projects/react/react-p64.lua")()
 include("/hooks/useQuery.lua")
 
 window({
