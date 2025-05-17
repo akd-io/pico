@@ -260,7 +260,7 @@ CartList = createComponent("CartList", function(props)
   }
 end)
 
-Pane = createComponent("Pane", function(x, y, width, height, color, children)
+local Pane = createComponent("Pane", function(x, y, width, height, color, children)
   rectfill(x, y, x + width, y + height, color)
   return {
     Camera(x, y),
@@ -269,7 +269,7 @@ Pane = createComponent("Pane", function(x, y, width, height, color, children)
   }
 end)
 
-App = createComponent("App", function()
+local App = createComponent("App", function()
   cls(7)
 
   local new = useCategoryCarts("bbs://new")

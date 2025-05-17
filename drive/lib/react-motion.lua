@@ -38,7 +38,7 @@ function __initMotion()
 
     state.targetPositions = animate
 
-    local springConfig = useContext(SpringConfigContext)
+    local springConfig = use(SpringConfigContext)
 
     local dt = 1 / 60
     for i, targetPosition in ipairs(state.targetPositions) do

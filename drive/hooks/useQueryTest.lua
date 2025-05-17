@@ -1,4 +1,4 @@
-include("/projects/react/react.lua")
+include("/projects/react/react.lua")()
 include("/hooks/useQuery.lua")
 
 window({
@@ -7,7 +7,7 @@ window({
 })
 
 local f = 0
-function App()
+local App = createComponent("App", function()
   f += 1
 
   local state = useState({
@@ -30,7 +30,7 @@ function App()
   print("meta: " .. tostr(query.meta))
   print("error: " .. tostr(query.error))
   print("loading: " .. tostr(query.loading))
-end
+end)
 
 function _draw()
   renderRoot(App)

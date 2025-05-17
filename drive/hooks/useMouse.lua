@@ -31,31 +31,28 @@ do
     local leftJustReleased = usePrevious(leftDown) and not leftDown
     local rightJustReleased = usePrevious(rightDown) and not rightDown
 
-    return {
+    return MouseContext.Provider(
       {
-        MouseContext.Provider,
-        {
-          x = x,
-          y = y,
-          wheel_x = wheel_x,
-          wheel_y = wheel_y,
-          leftDown = leftDown,
-          rightDown = rightDown,
-          leftClicked = leftJustReleased and not leftHasMovedWhileDown,
-          rightClicked = rightJustReleased and not rightHasMovedWhileDown,
-          leftDragged = leftJustReleased and leftHasMovedWhileDown,
-          rightDragged = rightJustReleased and rightHasMovedWhileDown,
-          leftDragStart = leftDragStart,
-          rightDragStart = rightDragStart,
-          leftSelection = leftDown and leftHasMovedWhileDown and { x, y, leftDragStart[1], leftDragStart[2] },
-          rightSelection = rightDown and rightHasMovedWhileDown and { x, y, rightDragStart[1], rightDragStart[2] }
-        },
-        children
-      }
-    }
+        x = x,
+        y = y,
+        wheel_x = wheel_x,
+        wheel_y = wheel_y,
+        leftDown = leftDown,
+        rightDown = rightDown,
+        leftClicked = leftJustReleased and not leftHasMovedWhileDown,
+        rightClicked = rightJustReleased and not rightHasMovedWhileDown,
+        leftDragged = leftJustReleased and leftHasMovedWhileDown,
+        rightDragged = rightJustReleased and rightHasMovedWhileDown,
+        leftDragStart = leftDragStart,
+        rightDragStart = rightDragStart,
+        leftSelection = leftDown and leftHasMovedWhileDown and { x, y, leftDragStart[1], leftDragStart[2] },
+        rightSelection = rightDown and rightHasMovedWhileDown and { x, y, rightDragStart[1], rightDragStart[2] }
+      },
+      children
+    )
   end)
 
   function useMouse()
-    return useContext(MouseContext)
+    return use(MouseContext)
   end
 end

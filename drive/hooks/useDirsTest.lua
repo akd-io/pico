@@ -1,4 +1,4 @@
-include("/projects/react/react.lua")
+local React = include("/projects/react/react.lua")()
 include("/hooks/useDir.lua")
 
 window({
@@ -7,7 +7,7 @@ window({
 })
 
 local f = 0
-App = createComponent("App", function()
+local App = createComponent("App", function()
   f += 1
 
   local paths = useState({

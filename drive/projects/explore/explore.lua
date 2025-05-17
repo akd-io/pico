@@ -1,6 +1,6 @@
 include("/lib/describe.lua")
 include("/lib/utils.lua")
-include("/projects/react/react.lua")
+include("/projects/react/react.lua")()
 include("/lib/react-motion.lua")
 useSprings, useSpring, useTransition, AnimatePresence, Motion = __initMotion()
 include("/hooks/usePrevious.lua")
@@ -41,10 +41,10 @@ local labelCachePodFilePath = ramExploreCacheDirPath .. "/labels.pod"
 
 local StatsOverlay = createComponent("StatsOverlay", function()
   return {
-    { Wrap, print, "\^o0ffFrame: " .. frame, 2, 2,      12 },
-    { Wrap, print, "\^o0ffMEM: " .. stat(0), 2, 2 + 10, 12 },
-    { Wrap, print, "\^o0ffCPU: " .. stat(1), 2, 2 + 20, 12 },
-    { Wrap, print, "\^o0ffFPS: " .. stat(7), 2, 2 + 30, 12 },
+    Wrap(print, "\^o0ffFrame: " .. frame, 2, 2, 12),
+    Wrap(print, "\^o0ffMEM: " .. stat(0), 2, 2 + 10, 12),
+    Wrap(print, "\^o0ffCPU: " .. stat(1), 2, 2 + 20, 12),
+    Wrap(print, "\^o0ffFPS: " .. stat(7), 2, 2 + 30, 12),
   }
 end)
 
@@ -135,40 +135,36 @@ local App = createComponent("App", function()
 
   cls()
 
-  return {
-    labels[1] and { drawnCartPaths[1], Label, labels[1], 1, width, height } or false,
-    labels[2] and { drawnCartPaths[2], Label, labels[2], 2, width, height } or false,
-    labels[3] and { drawnCartPaths[3], Label, labels[3], 3, width, height } or false,
-    labels[4] and { drawnCartPaths[4], Label, labels[4], 4, width, height } or false,
-    labels[5] and { drawnCartPaths[5], Label, labels[5], 5, width, height } or false,
-    labels[6] and { drawnCartPaths[6], Label, labels[6], 6, width, height } or false,
-    labels[7] and { drawnCartPaths[7], Label, labels[7], 7, width, height } or false,
-    { Wrap,         clip },
+  return Fragment(
+    labels[1] and { drawnCartPaths[1], Label(labels[1], 1, width, height) } or false,
+    labels[2] and { drawnCartPaths[2], Label(labels[2], 2, width, height) } or false,
+    labels[3] and { drawnCartPaths[3], Label(labels[3], 3, width, height) } or false,
+    labels[4] and { drawnCartPaths[4], Label(labels[4], 4, width, height) } or false,
+    labels[5] and { drawnCartPaths[5], Label(labels[5], 5, width, height) } or false,
+    labels[6] and { drawnCartPaths[6], Label(labels[6], 6, width, height) } or false,
+    labels[7] and { drawnCartPaths[7], Label(labels[7], 7, width, height) } or false,
+    Wrap(clip),
 
     --{ Wrap,         print,                    "\^o0ffselectedCategoryPath: " .. selectedCategoryPath, 2, 2 + 40, 12 },
     --{ Wrap,         print,                    "\^o0ffselectedCartIndex: " .. state.selectedCartIndex, 2, 2 + 50, 12 },
     --{ Wrap,         print,                    "\^o0ffselectedCartPath: " .. tostr(selectedCartPath),  2, 2 + 60, 12 },
 
-    { CenteredText, "\^o0ff" .. categoryName, 2, 12 },
-
-    (cartMetadata and cartMetadata.icon)
-    and {
-      { Wrap, palt },
-      { Wrap, spr, cartMetadata.icon, width / 2 - cartMetadata.icon:width() / 2, height - 1 - 60 - 16 - 2 }
-    }
-    or false,
-    { CenteredText, "\^o0ff" .. (cartFileName or ""),                                   height - 1 - 60, 12 },
-    { CenteredText, "\^o0ff" .. (cartMetadata.title or cartNameWithoutExtension or ""), height - 1 - 50, 12 },
-    { CenteredText, "\^o0ff" .. (cartMetadata.version or ""),                           height - 1 - 40, 12 },
-    { CenteredText, "\^o0ff" .. (cartMetadata.author or "Anonymous"),                   height - 1 - 30, 12 },
-    { CenteredText, "\^o0ff" .. (cartMetadata.notes or ""):gsub("\n", "\n\^o0ff"),      height - 1 - 20, 12 },
-
-    { StatsOverlay }
-  }
+    CenteredText("\^o0ff" .. categoryName, 2, 12),
+    (cartMetadata and cartMetadata.icon) and Fragment(
+      Wrap(palt),
+      Wrap(spr, cartMetadata.icon, width / 2 - cartMetadata.icon:width() / 2, height - 1 - 60 - 16 - 2)
+    ) or false,
+    CenteredText("\^o0ff" .. (cartFileName or ""), height - 1 - 60, 12),
+    CenteredText("\^o0ff" .. (cartMetadata.title or cartNameWithoutExtension or ""), height - 1 - 50, 12),
+    CenteredText("\^o0ff" .. (cartMetadata.version or ""), height - 1 - 40, 12),
+    CenteredText("\^o0ff" .. (cartMetadata.author or "Anonymous"), height - 1 - 30, 12),
+    CenteredText("\^o0ff" .. (cartMetadata.notes or ""):gsub("\n", "\n\^o0ff"), height - 1 - 20, 12),
+    StatsOverlay()
+  )
 end)
 
 frame = 0
 function _draw()
   frame += 1
-  renderRoot(App)
+  renderRoot(App())
 end
