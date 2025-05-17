@@ -16,6 +16,7 @@
   - Benchmark library
   - Consider refactoring `instances` to be a tree to prevent instance ids from ballooning in size using up memory.
   - Enhance error handling.
+    - Send error to both printh and picotron log? `send_message(3, {event="report_error", content = "Error message goes here."})`
     - Print the component stack trace when an error occurs.
       - See if we can use `debug` to get actual file#line locations of component definitions.
   - Profiler? https://react.dev/reference/react/
@@ -833,9 +834,8 @@ React.export = function( --[[self]])
   -- so it doesn't modify the global scope of users.
   for k, v in pairs(React) do
     if (k != "export") then
-      if (_G[k] != nil) then
-        --printh("Warning: " .. k .. " already exists in the global scope.")
-        -- TODO: Error handling. Do something like this instead? `send_message(3, {event="report_error", content = "bla bla"})`
+      if (_G[k] != nil and DEV) then
+        printh("Warning: " .. k .. " already exists in the global scope.")
       end
       _G[k] = v
     end
