@@ -122,8 +122,9 @@ printPrint("Making output folder...")
 mkdir(outputPath)
 
 if shouldUsePreviousLabel then
-  printPrint("Re-adding label.qoi...")
+  printPrint("Copying temoporary label.qoi to output folder...")
   cp(tempLabelPath, outputLabelPath)
+  printPrint("Removing temporary label.qoi...")
   rm(tempLabelPath)
 else
   printPrint("Adding black label.qoi...")
