@@ -1,8 +1,10 @@
 --[[
-  React.p64
+  React-p64
   This library tries to implement the most relevant features of the React.js library for Picotron.
   See the original library here: https://react.dev/
   Note that regular rules of hooks apply. Check them out here: https://react.dev/reference/rules/rules-of-hooks
+
+  For a simple demo, see `#react-demo` on the BBS.
 ]]
 
 --[[
@@ -150,42 +152,47 @@ end
 --- ### `Counter` example with some best practices
 ---
 --- ```lua
+--- --local React = include("react-p64.lua") -- ✅ Include normally to keep it
+--- --                                       --    under a `React` namespace.
+--- include("react-p64.lua")() -- ✅ Or add an extra pair of parentheses, `()`,
+--- --                         --    to add the react functions to the global scope.
+---
+--- window(100, 100)
+---
 --- local Print = component("Print", function(text)
 ---   print(text) -- ✅ Run draw operations at the top level of the render function.
 --- end)
 ---
---- local Counter = component("Counter", function(initialCount)
----   local count, setCount = useState(initialCount) -- ✅ Handle state with `useState`
+--- local Counter = component("Counter", function(label, btnCode)
+---   local count, setCount = useState(0) -- ✅ Handle state with `useState`.
 ---
----   if (keyp(0)) then
----   --counter += 1                -- ❌ Don't mutate state directly
+---   if (btnp(btnCode)) then
+---     --counter += 1              -- ❌ Don't mutate state directly.
 ---     count = setCount(count + 1) -- ✅ Set `count` using `setCount` to update
----                                 --    both the local `count` variable and
----                                 --    the internal state value (using `setCount`)
----                                 --    to persist it to next render.
+---     --                          --    both the local `count` variable and
+---     --                          --    the internal state value (using `setCount`)
+---     --                          --    to persist it to next render.
 ---   end
 ---
----   return Fragment(   -- ✅ Return components to build a component tree
----     Print("Count:"), -- ✅ Call components with arguments to pass props
----     print(count)     -- ⚠️ Be mindful when calling non-component functions in
----                      --    the return statement.
----                      --    In this example, `print` will be run before
----                      --    `Print`'s render function, which is likely
----                      --    not what you want.
----                      --    Try upper-casing `print` to fix the ordering.
+---   return Fragment( -- ✅ Return components to build a component tree.
+---     Print(label),  -- ✅ Call components with arguments to pass props.
+---     Print(count)
 ---   )
 --- end)
 ---
 --- local App = component("App", function()
----   cls()            -- ✅ Run draw operations at the top level of the render function.
+---   cls()                   -- ✅ Run draw operations at the top level of the render function.
 ---
----   return Fragment( -- ✅ Return components to build a component tree
----     Counter(100)   -- ✅ Call components with arguments to pass props
+---   return Fragment(        -- ✅ Return components to build a component tree.
+---     Counter("Left: ", 0), -- ✅ Call components with arguments to pass props.
+---     Counter("Right: ", 1),
+---     Counter("Up: ", 2),
+---     Counter("Down: ", 3)
 ---   )
 --- end)
 ---
 --- function _draw()
----   renderRoot(App)
+---   renderRoot(App) -- ✅ Render the root component every frame.
 --- end
 --- ```
 ---
@@ -826,7 +833,7 @@ local React = {
 }
 React.export = function( --[[self]])
   -- This function is also added to the returned table's `__call` metamethod,
-  -- such that you can call `include("#react")()` instead.
+  -- such that you can call `include("#react-p64")()` instead.
   -- Problem with this solution is react library authors still need to set every method as a local variable,
   -- so it doesn't modify the global scope of users.
   for k, v in pairs(React) do
