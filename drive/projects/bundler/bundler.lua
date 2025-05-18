@@ -39,9 +39,18 @@ end
 
 local argv = env().argv
 
+-- Parse flags
 if argv[1] == "-h" or argv[1] == "--help" or argv[1] == "-help" then
   printPrintUsage()
   exit(0)
+end
+local overwrite = false
+for i = #argv, 1, -1 do
+  local arg = argv[i]
+  if arg == "-o" or arg == "--overwrite" then
+    overwrite = true
+    table.remove(argv, i)
+  end
 end
 
 cd(env().path)
@@ -87,23 +96,42 @@ if fstat(inputPath) != "file" then
   exit(3)
 end
 
--- TODO: Check if output path exists
--- TODO: - If it exists:
--- TODO:   - Require user re-runs with `-o`/`--overwrite` flag
--- TODO:     - If `-o`/`--overwrite` flag given,
--- TODO:       - Check if output/label.qoi exists
--- TODO:         - If it exists, copy label.qoi to temp location, overwrite output, then copy back over the label.qoi.
--- TODO:         - If it doesn't, just overwrite output
+local outputLabelPath = outputPath .. "/label.qoi"
+local tempLabelPath = "/ram/appdata/bundler/temp_label.qoi"
+local shouldUsePreviousLabel = false
 
--- Make cartridge
-print("Making .p64 directory...")
+-- Check if output path exists
+if fstat(outputPath) == "folder" then
+  if not overwrite then
+    printPrint("Output folder exists. Use -o or --overwrite to proceed.")
+    exit(4)
+  end
+
+  printPrint("Looking for output label.qoi at " .. outputLabelPath .. "...")
+  shouldUsePreviousLabel = fstat(outputLabelPath) == "file"
+  if shouldUsePreviousLabel then
+    printPrint("Making temporary copy of label.qoi...")
+    cp(outputLabelPath, tempLabelPath)
+  end
+
+  printPrint("Removing existing output folder...")
+  rm(outputPath)
+end
+
+printPrint("Making output folder...")
 mkdir(outputPath)
 
--- Copy input file to the cartridge as main.lua
-print("Adding main.lua...")
-cp(inputPath, outputPath .. "/main.lua")
+if shouldUsePreviousLabel then
+  printPrint("Re-adding label.qoi...")
+  cp(tempLabelPath, outputLabelPath)
+  rm(tempLabelPath)
+else
+  printPrint("Adding black label.qoi...")
+  cp(blackLabelPath, outputPath .. "/label.qoi")
+end
 
-print("Adding label.qoi...")
-cp(blackLabelPath, outputPath .. "/label.qoi")
+-- Copy input file to the cartridge as main.lua
+printPrint("Adding main.lua...")
+cp(inputPath, outputPath .. "/main.lua")
 
 printPrint("Created cartridge: " .. outputPath)
