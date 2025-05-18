@@ -221,7 +221,8 @@ dist
 
 # Custom ignores
 .env
-.aider*
+/.aider*
+/.roo*
 
 # Custom Picotron ignores
 drive/dumps/*/ram/mount/
