@@ -5,8 +5,11 @@
   - Process:
     - (Done) Takes a Lua file
     - (Done) Creates a .p64 cart
-    - recursively finds all includes
-    - copies all dependencies to cart
+    - Reads a `bundler.pod` config.
+      - `files` - List of file to copy over. Paths relative to source dir.
+    - Automatically loads and export a .p64.png too.
+    - Recursively finds all includes/dependencies
+      - Copies all dependencies to cart
   - I believe include statements just need to have leading `/` removed if files
     are copied into the cart such that the cart becomes the new root for their
     paths.
