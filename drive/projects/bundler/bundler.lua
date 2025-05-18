@@ -87,10 +87,13 @@ if fstat(inputPath) != "file" then
   exit(3)
 end
 
--- TODO: Check output path does not exist?
+-- TODO: Check if output path exists
 -- TODO: - If it exists:
--- TODO:   - Ask user to confirm overwrite
--- TODO:     - If overwrite, copy over existing label.qoi if it exists.
+-- TODO:   - Require user re-runs with `-o`/`--overwrite` flag
+-- TODO:     - If `-o`/`--overwrite` flag given,
+-- TODO:       - Check if output/label.qoi exists
+-- TODO:         - If it exists, copy label.qoi to temp location, overwrite output, then copy back over the label.qoi.
+-- TODO:         - If it doesn't, just overwrite output
 
 -- Make cartridge
 print("Making .p64 directory...")
