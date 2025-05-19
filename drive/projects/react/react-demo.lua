@@ -1,7 +1,7 @@
---local React = include("react64.lua") -- ✅ Include normally to keep it
---                                       --    under a `React` namespace.
-include("react-p64.lua")() -- ✅ Or add an extra pair of parentheses, `()`,
---                         --    to add the react functions to the global scope.
+--local React = include("bbs://react64-1.p64/main.lua") -- ✅ Include normally to keep it
+--                                                      --    under a `React` namespace.
+include("bbs://react64-1.p64/main.lua")() -- ✅ Or add an extra pair of parentheses, `()`,
+--                                        --    to add all react functions to the global scope.
 
 window(100, 100)
 
