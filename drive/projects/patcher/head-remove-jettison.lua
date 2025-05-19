@@ -27,8 +27,8 @@
 
 include("/lib/literal.lua")
 
-local pattern = literal('include("/system/lib/jettison.lua")')
---print(pattern)
+local literalPattern = literal('include("/system/lib/jettison.lua")')
+--print(literalPattern)
 
 --[[
   TODO:
@@ -43,7 +43,7 @@ local pattern = literal('include("/system/lib/jettison.lua")')
 
 local filePath = "/system/lib/head.lua"
 local contents = fetch(filePath)
-local new_contents, count = contents:gsub(pattern, "")
+local new_contents, count = contents:gsub(literalPattern, "")
 
 assert(count <= 1) -- TODO: Possible to narrow more? We want to change 1 line exactly, but if code ran already, it's not there, and count is 0.
 if (count == 0) then
