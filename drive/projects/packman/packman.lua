@@ -78,7 +78,7 @@
 ]]
 include("/lib/describe.lua")
 include("/lib/utils.lua")
-include("/projects/react/react-p64.lua")()
+include("/projects/react/react64.lua")()
 
 include("app.lua")
 

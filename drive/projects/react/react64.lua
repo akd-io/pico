@@ -1,5 +1,5 @@
 --[[
-  React-p64
+  React64
   This library tries to implement the most relevant features of the React.js library for Picotron.
   See the original library here: https://react.dev/
   Note that regular rules of hooks apply. Check them out here: https://react.dev/reference/rules/rules-of-hooks
@@ -152,9 +152,9 @@ end
 --- ### `Counter` example with some best practices
 ---
 --- ```lua
---- --local React = include("react-p64.lua") -- ✅ Include normally to keep it
+--- --local React = include("react64.lua") -- ✅ Include normally to keep it
 --- --                                       --    under a `React` namespace.
---- include("react-p64.lua")() -- ✅ Or add an extra pair of parentheses, `()`,
+--- include("react64.lua")() -- ✅ Or add an extra pair of parentheses, `()`,
 --- --                         --    to add the react functions to the global scope.
 ---
 --- window(100, 100)
@@ -458,7 +458,7 @@ end
 ---
 --- In React.js, when you store an object in state, `useState({})`, you are required to use `setState()` when modifying the object, to trigger a rerender.
 ---
---- Because react-p64 renders every frame, we aren't reliant on a state tables (passing tables, `{}`, to `useState()`) to change its reference every mutation, and thus, it is fine to mutate state tables directly.
+--- Because React64 renders every frame, we aren't reliant on a state tables (passing tables, `{}`, to `useState()`) to change its reference every mutation, and thus, it is fine to mutate state tables directly.
 ---
 --- For example:
 --- ```lua
@@ -573,7 +573,7 @@ end
 --- end)
 --- ```
 ---
---- You can use `false` instead of `nil` in arrays, as react-p64 ignores `false` values.
+--- You can use `false` instead of `nil` in arrays, as React64 ignores `false` values.
 --- But getting into the habit of using `Fragment` will save you some headaches down the line.
 ---
 --- ## `Fragment` vs `pack`
@@ -833,7 +833,7 @@ local React = {
 }
 React.export = function( --[[self]])
   -- This function is also added to the returned table's `__call` metamethod,
-  -- such that you can call `include("#react-p64")()` instead.
+  -- such that you can call `include("react64.lua")()` instead.
   -- Problem with this solution is react library authors still need to set every method as a local variable,
   -- so it doesn't modify the global scope of users.
   for k, v in pairs(React) do

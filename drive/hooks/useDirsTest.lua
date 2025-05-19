@@ -1,4 +1,4 @@
-local React = include("/projects/react/react-p64.lua")()
+local React = include("/projects/react/react64.lua")()
 include("/hooks/useDir.lua")
 
 window({
