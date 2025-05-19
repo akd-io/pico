@@ -125,7 +125,7 @@ printPrint("Making output folder...")
 mkdir(outputPath)
 
 if shouldUsePreviousLabel then
-  printPrint("Copying temoporary label.qoi to output folder...")
+  printPrint("Copying temporary label.qoi to output folder...")
   cp(tempLabelPath, outputLabelPath)
   printPrint("Removing temporary label.qoi...")
   rm(tempLabelPath)
