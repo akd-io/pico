@@ -1,5 +1,3 @@
---[[pod_format="raw",created="2025-03-30 21:12:50",modified="2025-03-31 11:24:42",revision=10]]
-
 window({
   width = 140,
   height = 100,
@@ -17,7 +15,6 @@ function _update()
   update += 1
 
   if btnp(btnUp) then
-    print("btnUp pressed")
     mag = mid(minMag, mag + 1, maxMag)
   end
   if btnp(btnDown) then
